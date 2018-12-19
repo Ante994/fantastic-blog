@@ -8,21 +8,22 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Post;
+use App\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class DefaultController
+class DefaultController extends AbstractController
 {
 
     public function index()
     {
-        try {
-            $number = random_int(0, 100);
-        } catch (\Exception $e) {
-        }
+        $users = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findAll();
 
-        return new Response(
-            '<html><body>Lucky number: '.$number.'</body></html>'
-        );
+        return $this->render('default/index.html.twig', [
+            'users' => $users,
+        ]);
     }
 
 }
