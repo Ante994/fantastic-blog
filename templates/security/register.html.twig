@@ -2,15 +2,13 @@
 
 {% block body %}
 <div class="container">
-    <div class="row">
-    {{ form_start(form) }}
-        {{ form_row(form.firstname) }}
-        {{ form_row(form.lastname) }}
-        {{ form_row(form.email) }}
-        {{ form_row(form.plainPassword.first) }}
-        {{ form_row(form.plainPassword.second) }}
-    <button type="submit">Register!</button>
-    {{ form_end(form) }}
+    <div class="col"></div>
+    <div class="col">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-md btn-primary btn-block" type="submit">Submit</button>
+        {{ form_end(form) }}
     </div>
+    <div class="col"></div>
 </div>
 {% endblock %}

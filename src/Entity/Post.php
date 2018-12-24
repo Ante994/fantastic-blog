@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Post
 {
@@ -42,6 +45,19 @@ class Post
      */
     private $postDetail;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", mappedBy="post")
+     */
+    private $tags;
+
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,9 +92,12 @@ class Post
         return $this->dateCreated;
     }
 
-    public function setDateCreated(\DateTimeInterface $dateCreated): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setDateCreated(): self
     {
-        $this->dateCreated = $dateCreated;
+        $this->dateCreated = new \DateTime();
 
         return $this;
     }
@@ -111,4 +130,33 @@ class Post
 
         return $this;
     }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+            $tag->addPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+            $tag->removePost($this);
+        }
+
+        return $this;
+    }
+
 }

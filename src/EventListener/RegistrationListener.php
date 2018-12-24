@@ -8,21 +8,35 @@
 
 namespace App\EventListener;
 
-
 use App\Entity\User;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Listener for user registration before persisting, setting up entity filed and
+ * encode plain password
+ *
+ * Class RegistrationListener
+ * @package App\EventListener
+ */
 class RegistrationListener
 {
 
     private $passwordEncoder;
 
+    /**
+     * RegistrationListener constructor.
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     * @throws \Exception
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();

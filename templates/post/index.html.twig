@@ -4,17 +4,14 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Users</th>
-
+            <th>Posts</th>
         </tr>
         </thead>
         <tbody>
-        {% for user in users %}
+        {% for post in posts %}
             <tr>
-                <td>
-                    {{ user.displayName }}
-                </td>
-
+                <td>{{ post.title }}</td>
+                <td>{{ post.dateCreated|date('F j, Y, g:i a')}}</td>
             </tr>
         {% endfor %}
         </tbody>
