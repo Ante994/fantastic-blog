@@ -25,7 +25,7 @@ security:
                 path:     /
             logout:
               path:   logout
-              target: homepage
+              target: post_index
 
 
             # form_login: true

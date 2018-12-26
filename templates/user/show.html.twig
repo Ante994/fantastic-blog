@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>
+        {{ user.displayName|upper }}
+        <a href="{{ path('user_edit', { user: user.id }) }}" class="pull-right btn btn-link">
+            <span class="fa fa-pencil"></span>
+        </a>
+    </h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Name</th>
+            <td>{{ user.firstname }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-6">
+            <p>Comments</p>
+        </div>
+        <div class="col-md-6">
+            <p>Likes/favorites</p>
+        </div>
+    </div>
+
+{% endblock %}

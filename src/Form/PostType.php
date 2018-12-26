@@ -21,12 +21,15 @@ class PostType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('postDetail', PostDetailForm::class)
+            ->add('postDetail', PostDetailForm::class, array(
+                'label' => false
+            ))
             ->add('tags', EntityType::class, array(
                 'class' => Tag::class,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true,
+                'label' => false
                 )
             )
         ;

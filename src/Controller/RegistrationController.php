@@ -39,7 +39,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('post_index');
         }
 
         return $this->render(
