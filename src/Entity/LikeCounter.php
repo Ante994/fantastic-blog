@@ -26,6 +26,11 @@ class LikeCounter
      */
     private $owner;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $value;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,4 +59,18 @@ class LikeCounter
 
         return $this;
     }
+
+    public function getValue(): ?int
+    {
+        return $this->value;
+    }
+
+    public function setValue(?int $value): self
+    {
+        $this->value += $value;
+
+        return $this;
+    }
+
+
 }

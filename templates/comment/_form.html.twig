@@ -1,5 +1,5 @@
 {{ form_start(form) }}
     {{ form_errors(form.content) }}
     {{ form_widget(form.content) }}
-    <button class="btn" >{{ button_label|default('Comment') }}</button>
+    <button class="comment-submit" class="btn">{{ button_label|default('Comment') }}</button>
 {{ form_end(form) }}

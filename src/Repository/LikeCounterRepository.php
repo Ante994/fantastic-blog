@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\LikeCounter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,32 +20,19 @@ class LikeCounterRepository extends ServiceEntityRepository
         parent::__construct($registry, LikeCounter::class);
     }
 
-    // /**
-    //  * @return LikeCounter[] Returns an array of LikeCounter objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findTotalLikesForPost($post)
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('l')
+            ->select('sum(l.value)')
+            ->groupby('l.post')
+            ->having('l.post =:postId')
+            ->setParameter('postId', $post)
+            ->getQuery();
 
-    /*
-    public function findOneBySomeField($value): ?LikeCounter
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        try {
+            return $query->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        };
     }
-    */
+
 }

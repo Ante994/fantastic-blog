@@ -5,8 +5,8 @@
             <td>
                 <h2>
                     {{ post.title }}
-                    <a href="{{ path('post_show', { post: post.id }) }}">
-                        <span class="fa fa-hand-pointer-o"></span>
+                    <a href="{{ path('post_show', { post: post.slug }) }}">
+                        <i class="fas fa-hand-point-up"></i>
                     </a>
                 </h2>
                 <p>{{ post.dateCreated|date('F j, Y, g:i a')}}</p>
