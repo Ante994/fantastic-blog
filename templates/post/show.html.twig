@@ -23,31 +23,13 @@
                         <a class="fas fa-comments"> ({{ post.comments|length }}) </a>
                     </span>
                     <span class="post-favorite">
-                        {% if favorited %}
+                        {% if favorite %}
                             <a href="{{ path('ajax_favorite', { slug: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">Remove from favorite</a>
                         {% else %}
                             <a href="{{ path('ajax_favorite', { slug: post.slug}) }}" class="fas fa-star favorite js-post-favorite">Add to favorite</a>
                         {% endif %}
                     </span>
-                        <style>
-                            a.fas.fa-star.unfavorite{
-                                color: red;
-                            }
-
-                            a.fas.fa-star.unfavorite:hover {
-                                color: grey;
-                            }
-
-                            a.fas.fa-star.favorite {
-                                color: grey;
-                            }
-
-                            a.fas.fa-star.favorite:hover {
-                                color: red;
-                            }
-                        </style>
-
-                        </div>
+                    </div>
                     <div class="col-md-2">
                         <span>
                             <a href="{{ path('post_delete', { post: post.id }) }}" class="fas fa-trash"></a>
@@ -59,20 +41,17 @@
         </ul>
         <br>
         <p>{{ post.postDetail.content }}</p>
-
-
-    <div id="post-comments">
-        {% include 'comment/_form.html.twig' %}
-        <div id="post-comments-body">
-            {% for comment in post.comments|reverse %}
-                <li class="list-group-item">
-                    <p>{{ comment.content }} - {{ comment.author.displayName }} - {{ comment.created|date('j.m.Y G:i') }}</p>
-                </li>
-            {% endfor %}
+        <hr>
+        <div id="post-comments">
+            {% include 'comment/_form.html.twig' %}
+            <div id="post-comments-body">
+                {% for comment in post.comments|reverse %}
+                    <li class="list-group-item">
+                        <p>{{ comment.content }} - {{ comment.author.displayName }} - {{ comment.created|date('j.m.Y G:i') }}</p>
+                    </li>
+                {% endfor %}
+            </div>
         </div>
-    </div>
-
-
 {% endblock %}
 
 
@@ -90,11 +69,10 @@
             $(function() {
                 $('#post-comments').on('click', ".comment-submit", function (e) {
                     e.preventDefault();
-                    var data = {
+                    let data = {
                         content: $('#comment_content').val(),
                         post: {{ post.id }}
                     };
-                    console.log(data)
                     $.ajax({
                         type: "POST",
                         dataType: "json",
@@ -111,13 +89,9 @@
 
                 $('.post-likes').on('click', ".js-like-article", function (e) {
                     e.preventDefault();
-                    var data = {
+                    let data = {
                         post: {{ post.id }}
                     };
-
-                    var $link = $(e.currentTarget);
-                    $link.toggleClass('fa-heart-o').toggleClass('fa-heart');
-                    console.log($link)
 
                     $.ajax({
                         type: "POST",
@@ -125,19 +99,15 @@
                         data: data,
                         url: '{{ path('ajax_like') }}',
                     }).done(function (data) {
-                        console.log(data.likes)
                         $('.js-like-article-count').html('('+data.likes+')');
                     });
                 });
 
                 $('.post-favorite').on('click', ".js-post-favorite", function (e) {
                     e.preventDefault();
-                    var data = {
+                    let data = {
                         post: {{ post.id }}
                     };
-
-                    var $link = $(e.currentTarget);
-                    console.log($link)
 
                     $.ajax({
                         type: "POST",
@@ -145,8 +115,7 @@
                         data: data,
                         url: '{{ path('ajax_favorite') }}',
                     }).done(function (data) {
-                        console.log(data)
-                        if (data.favorited === true) {
+                        if (data.favorite === true) {
                             $('.post-favorite').append('<a href="{{ path('ajax_favorite', { slug: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">Remove from favorite</a>');
                             $('.fas.fa-star.favorite').hide();
                         } else {
@@ -155,10 +124,8 @@
                         }
                     });
                 });
-
             });
         });
-
 
     </script>
 

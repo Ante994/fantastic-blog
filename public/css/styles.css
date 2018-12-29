@@ -183,3 +183,21 @@ html {height:100%}
   background-color: #fff;
   margin-top: 10px;
 }
+
+/* FAVORITE LINKS */
+a.fas.fa-star.unfavorite{
+     color: red;
+ }
+
+a.fas.fa-star.unfavorite:hover {
+    color: grey;
+}
+
+a.fas.fa-star.favorite {
+    color: grey;
+}
+
+a.fas.fa-star.favorite:hover {
+    color: red;
+}
+

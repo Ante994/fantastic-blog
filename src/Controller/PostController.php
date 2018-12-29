@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
 use App\Entity\Favorite;
 use App\Entity\LikeCounter;
 use App\Entity\Post;
@@ -108,7 +107,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * Displaying one post
+     * Show one post with all details
      *
      * @Route("/posts/{post}", name="post_show")
      * @param Post $post
@@ -123,12 +122,12 @@ class PostController extends AbstractController
 
         $post = $this->repository->find($post);
         $totalLikes = $this->getDoctrine()->getRepository(LikeCounter::class)->findTotalLikesForPost($post);
-        $favorited = $this->getDoctrine()->getRepository(Favorite::class)->findBy(['post'=> $post, 'user'=> $this->getUser()]);
+        $favorite = $this->getDoctrine()->getRepository(Favorite::class)->findBy(['post'=> $post, 'user'=> $this->getUser()]);
 
         return $this->render('post/show.html.twig', [
             'post' => $post,
             'totalLikes' => $totalLikes[$post->getId()],
-            'favorited' => $favorited,
+            'favorite' => $favorite,
             'form' => $this->createForm(CommentType::class)->createView(),
             ]
         );
@@ -158,7 +157,6 @@ class PostController extends AbstractController
             $em->persist($post);
             $em->flush();
 
-            #dump($posts);die;
             return $this->redirectToRoute('post_index');
         }
 
@@ -185,45 +183,13 @@ class PostController extends AbstractController
                 ]
             );
         }
+
+        throw $this->createNotFoundException('Not found');
     }
 
-
     /**
-     * Ajax call for commenting post
+     * Helper function for paginate posts
      *
-     * @Route("/ajax-comment", name="ajax_comment")
-     * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface|string|Response
-     * @throws \Exception
-     */
-    public function ajaxComment(Request $request)
-    {
-        if ($request->isXmlHttpRequest() && $request->get('content')) {
-            $comment = new Comment();
-            $comment->setContent($request->get('content'));
-            $comment->setAuthor($this->getUser());
-            $comment->setCreated(new \DateTime());
-
-            $post = $request->get('post');
-            $post = $this->repository->find($post);
-            $comment->setPost($post);
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-
-            return $this->json([
-                'comment' => $comment->getContent(),
-                'author' => $comment->getAuthor()->getDisplayName(),
-                'created' => $comment->getCreated()->format('j.m.Y G:i'),
-                ]);
-        }
-
-        return $this->redirectToRoute('tag_index');
-    }
-
-    /**
      * @param Request $request
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
@@ -243,87 +209,5 @@ class PostController extends AbstractController
         );
 
         return $pagination;
-    }
-
-
-    /**
-     * Ajax call for like post
-     *
-     * @Route("/ajax-like", name="ajax_like")
-     * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface|string|Response
-     */
-    public function ajaxLike(Request $request)
-    {
-        # korisnik moze vise puta likeati (max. 10 puta)
-        # dohvati post,user iz tablice likeovi i vidi koliko ima do sada
-        # a) triba mi POST, user je ovaj trenutni
-        # b) triba vidit da li vec ima like u tablici
-
-        if ($request->isXmlHttpRequest()) {
-            $repository = $this->getDoctrine()->getRepository(LikeCounter::class);
-            $post = $request->get('post');
-            $post = $this->repository->find($post);
-            $postLike = $repository->findOneBy([
-                'post' => $post,
-                'owner' => $this->getUser(),
-            ]);
-
-            # ako do sada nije like-a
-            if (!$postLike) {
-                $postLike = new LikeCounter();
-                $postLike->setPost($post);
-                $postLike->setOwner($this->getUser());
-
-            }
-
-            $postLike->setValue(1);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($postLike);
-            $entityManager->flush();
-
-            # prebroji sve likeove
-            $totalLikes = $repository->findTotalLikesForPost($post);
-            return $this->json(['likes' => $totalLikes[$post->getId()]]);
-        }
-    }
-
-
-    /**
-     * Ajax call for favorite post
-     *
-     * @Route("/ajax-favorite", name="ajax_favorite")
-     * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface|string|Response
-     */
-    public function ajaxFavorite(Request $request)
-    {
-        if ($request->isXmlHttpRequest()) {
-            $repository = $this->getDoctrine()->getRepository(Favorite::class);
-
-            $post = $request->get('post');
-            $post = $this->repository->find($post);
-            $postFavorite = $repository->findOneBy([
-                'post' => $post,
-                'user' => $this->getUser(),
-            ]);
-
-            $entityManager = $this->getDoctrine()->getManager();
-
-            if (!$postFavorite) {
-                $postFavorite = new Favorite();
-                $postFavorite->setUser($this->getUser());
-                $postFavorite->setPost($post);
-                $entityManager->persist($postFavorite);
-                $entityManager->flush();
-                return $this->json(['favorited' => true]);
-            } else {
-                $entityManager->remove($postFavorite);
-                $entityManager->flush();
-                return $this->json(['favorited' => false]);
-            }
-
-
-        }
     }
 }
