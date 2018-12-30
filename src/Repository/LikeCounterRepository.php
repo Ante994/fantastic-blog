@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\LikeCounter;
+use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -20,7 +21,11 @@ class LikeCounterRepository extends ServiceEntityRepository
         parent::__construct($registry, LikeCounter::class);
     }
 
-    public function findTotalLikesForPost($post)
+    /**
+     * @param Post $post
+     * @return mixed
+     */
+    public function findTotalLikesForPost(Post $post)
     {
         $query = $this->createQueryBuilder('l')
             ->select('sum(l.value)')

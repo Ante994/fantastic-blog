@@ -1,0 +1,13 @@
+<li class="list-group-item" id="comment-{{ comment.id }}">
+    <p>
+        {{ comment.content }}
+        <span class="comment-author">
+            {{ comment.author.displayName }} - {{ comment.created|date('j.m.Y G:i') }}
+            <a href="{{ path('ajax_comment_delete', { comment: comment.id }) }}" data-value="{{ comment.id }}" class="comment-delete fas fa-trash"></a>
+        </span>
+    </p>
+</li>
+
+{% block javascripts %}
+
+{% endblock %}

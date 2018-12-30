@@ -201,3 +201,18 @@ a.fas.fa-star.favorite:hover {
     color: red;
 }
 
+/* COMMENTS */
+.post-comments-body li.list-group-item {
+    background-color: lightgrey;
+    position: relative;
+    display: block;
+    padding: .3rem .55rem;
+    margin-bottom: 1px;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+.comment-author {
+    float: right;
+    font-style: italic;
+    font-size: 14px;
+}

@@ -90,6 +90,7 @@ class PostController extends AbstractController
      *
      * @Route("/posts/{post}/delete", name="post_delete")
      * @param Post $post
+     * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
      * @return Response
      */
     public function delete(Post $post)
@@ -126,7 +127,7 @@ class PostController extends AbstractController
 
         return $this->render('post/show.html.twig', [
             'post' => $post,
-            'totalLikes' => $totalLikes[$post->getId()],
+            'totalLikes' => $totalLikes[1],
             'favorite' => $favorite,
             'form' => $this->createForm(CommentType::class)->createView(),
             ]
@@ -139,6 +140,7 @@ class PostController extends AbstractController
      * @Route("/posts/{post}/edit", name="post_edit")
      * @param Request $request
      * @param Post $post
+     * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function edit(Request $request, Post $post)

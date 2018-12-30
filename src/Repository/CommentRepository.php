@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,22 +20,22 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    // /**
-    //  * @return Comment[] Returns an array of Comment objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param User $user
+     * @return Comment[] Returns an array of Comment objects
+     */
+    public function findLatestUserComments(User $user)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
+            ->andWhere('c.author = :user')
+            ->setParameter('user', $user)
+            ->orderBy('c.created', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Comment

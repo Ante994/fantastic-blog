@@ -31,6 +31,14 @@ class LikeCounter
      */
     private $value;
 
+    /**
+     * LikeCounter constructor.
+     */
+    public function __construct()
+    {
+        $this->value = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -73,7 +73,7 @@ class FavoriteController extends AbstractController
         }
         $entityManager->flush();
 
-        return $this->json($favorite);
+        return $this->json($favorite, 200);
     }
 
 }

@@ -21,6 +21,7 @@
                 <td>
                     <a href="{{ path('tag_show', {'id': tag.id}) }}">show</a>
                     <a href="{{ path('tag_edit', {'id': tag.id}) }}">edit</a>
+                    <a href="{{ path('tag_delete', {'id': tag.id}) }}">delete</a>
                 </td>
             </tr>
         {% else %}

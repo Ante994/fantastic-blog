@@ -43,7 +43,8 @@ class LikeCounterController extends AbstractController
             $this->likePost($post);
             $totalLikes = $this->repository->findTotalLikesForPost($post);
 
-            return $this->json(['likes' => $totalLikes[$post->getId()]]);
+            return $this->json(['likes' => $totalLikes[1],
+                'likes2' => $totalLikes]);
         }
 
         throw $this->createNotFoundException('Not found');
@@ -69,6 +70,7 @@ class LikeCounterController extends AbstractController
             $postLike = new LikeCounter();
             $postLike->setPost($post);
             $postLike->setOwner($this->getUser());
+            $postLike->setValue(1);
         }
 
         $entityManager = $this->getDoctrine()->getManager();
