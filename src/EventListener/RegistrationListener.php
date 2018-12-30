@@ -50,6 +50,7 @@ class RegistrationListener
         if ('admin' == explode("@", $entity->getEmail(), 2)[0]) {
             $entity->setRoles(['ROLE_ADMIN']);
         }
+
         $entity->setRegistrationDate(new \DateTime());
         $entity->setLastLogin(new \DateTime());
         $entity->setDisplayName($entity->getFirstname().' '.$entity->getLastname());

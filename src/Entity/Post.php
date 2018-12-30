@@ -21,6 +21,11 @@ class Post
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Title cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\NotBlank
      */
     private $title;
 
@@ -56,7 +61,7 @@ class Post
     private $comments;
 
     /**
-     * @ORM\Column(type="string", length=100, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $slug;
 

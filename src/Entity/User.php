@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email")
  */
 class User implements UserInterface, \Serializable
 
@@ -20,17 +22,33 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="string", length=30)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 30,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50,
+     *      minMessage = "Your last name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your last name cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=50)
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=40)
+     * @Assert\NotBlank
+     * @Assert\Email
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
@@ -61,7 +79,7 @@ class User implements UserInterface, \Serializable
     private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=255)
      */
     private $displayName;
 

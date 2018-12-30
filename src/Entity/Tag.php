@@ -19,7 +19,14 @@ class Tag
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 30,
+     *      minMessage = "Tag name must be at least {{ limit }} characters long",
+     *      maxMessage = "Tag name cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=30)
      */
     private $name;
 
