@@ -145,12 +145,7 @@ class PostController extends AbstractController
      */
     public function edit(Request $request, Post $post)
     {
-        if (!$this->getUser() instanceof User ) {
-            throw $this->createNotFoundException("This does not exist or you not allowed be here!");
-        }
-
         $post = $this->repository->find($post);
-
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

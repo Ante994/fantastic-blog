@@ -46,19 +46,20 @@ class FavoriteController extends AbstractController
     {
         $post = $this->getDoctrine()->getRepository(Post::class)->find($post = $request->get('post'));
         if ($request->isXmlHttpRequest() && $post instanceof Post) {
-            return $this->favoritePost($post);
+            $favorite = $this->favoritePost($post);
+            return $this->json($favorite, 200);
         }
 
         throw $this->createNotFoundException('Not found');
     }
 
     /**
-     * Helper function for favorite post
+     * Function for making post favorite or removing
      *
      * @param Post $post
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return array
      */
-    public function favoritePost(Post $post): \Symfony\Component\HttpFoundation\JsonResponse
+    public function favoritePost(Post $post)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $postFavorite = $this->repository->findOneBy([
@@ -79,7 +80,7 @@ class FavoriteController extends AbstractController
         }
         $entityManager->flush();
 
-        return $this->json($favorite, 200);
+        return $favorite;
     }
 
 }

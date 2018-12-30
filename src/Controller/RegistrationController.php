@@ -40,15 +40,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $token = new UsernamePasswordToken(
-                $user,
-                $user->getPassword(),
-                'main',
-                $user->getRoles()
-            );
-
-            $this->get('security.token_storage')->setToken($token);
-            $this->get('session')->set('_security_main', serialize($token));
+            $this->loginUserAfterRegistration($user);
 
             return $this->redirectToRoute('post_index');
         }
@@ -57,6 +49,21 @@ class RegistrationController extends AbstractController
             'security/register.html.twig',
             array('form' => $form->createView())
         );
+    }
+
+    /**
+     * @param User $user
+     */
+    public function loginUserAfterRegistration(User $user): void
+    {
+        $token = new UsernamePasswordToken(
+            $user,
+            $user->getPassword(),
+            'main',
+            $user->getRoles()
+        );
+        $this->get('security.token_storage')->setToken($token);
+        $this->get('session')->set('_security_main', serialize($token));
     }
 
 }

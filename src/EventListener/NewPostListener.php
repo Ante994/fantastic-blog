@@ -10,6 +10,7 @@ namespace App\EventListener;
 
 use App\Entity\Post;
 use App\Entity\User;
+use App\Service\Slugger;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Security;
 
@@ -21,15 +22,17 @@ use Symfony\Component\Security\Core\Security;
  */
 class NewPostListener
 {
-
+    private $slugger;
     private $security;
 
     /**
      * NewPostListener constructor.
      * @param Security $security
+     * @param Slugger $slugger
      */
-    public function __construct(Security $security)
+    public function __construct(Security $security, Slugger $slugger)
     {
+        $this->slugger = $slugger;
         $this->security = $security;
     }
 
@@ -47,36 +50,8 @@ class NewPostListener
         /** @var User $user */
         $user = $this->security->getUser();
         $entity->setAuthor($user);
-        $entity->setStatus(['hidden']);
-        $slug = $this->makeSlug($entity->getTitle());
+        $entity->setStatus(['enabled']);
+        $slug = $this->slugger->makeSlug($entity->getTitle());
         $entity->setSlug($slug.'-'.rand(100, 999));
-
-    }
-
-    public function makeSlug(string $text)
-    {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-
-        // transliterate
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-
-        // trim
-        $text = trim($text, '-');
-
-        // remove duplicate -
-        $text = preg_replace('~-+~', '-', $text);
-
-        // lowercase
-        $text = strtolower($text);
-
-        if (empty($text)) {
-            return 'n-a';
-        }
-
-        return $text;
     }
 }
