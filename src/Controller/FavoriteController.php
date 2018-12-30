@@ -11,11 +11,17 @@ namespace App\Controller;
 use App\Entity\Favorite;
 use App\Entity\Post;
 use App\Repository\FavoriteRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_USER")
+ * Class FavoriteController
+ * @package App\Controller
+ */
 class FavoriteController extends AbstractController
 {
     private $repository;

@@ -11,11 +11,17 @@ namespace App\Controller;
 use App\Entity\LikeCounter;
 use App\Entity\Post;
 use App\Repository\LikeCounterRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_USER")
+ * Class LikeCounterController
+ * @package App\Controller
+ */
 class LikeCounterController extends AbstractController
 {
     private $repository;

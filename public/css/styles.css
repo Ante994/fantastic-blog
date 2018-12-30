@@ -185,6 +185,10 @@ html {height:100%}
 }
 
 /* FAVORITE LINKS */
+.fas.fa-heart {
+    color: red;
+}
+
 a.fas.fa-star.unfavorite{
      color: red;
  }

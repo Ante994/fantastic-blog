@@ -3,7 +3,10 @@
         {{ comment.content }}
         <span class="comment-author">
             {{ comment.author.displayName }} - {{ comment.created|date('j.m.Y G:i') }}
-            <a href="{{ path('ajax_comment_delete', { comment: comment.id }) }}" data-value="{{ comment.id }}" class="comment-delete fas fa-trash"></a>
+
+            {% if is_granted('ROLE_ADMIN') or app.user == comment.author %}
+                <a href="{{ path('ajax_comment_delete', { comment: comment.id }) }}" data-value="{{ comment.id }}" class="comment-delete fas fa-trash"></a>
+            {% endif %}
         </span>
     </p>
 </li>

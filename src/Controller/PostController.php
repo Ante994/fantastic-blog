@@ -16,6 +16,7 @@ use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\PostRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,6 +63,7 @@ class PostController extends AbstractController
     /**
      * Creating new post
      *
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/posts/new", name="post_new")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
@@ -88,6 +90,7 @@ class PostController extends AbstractController
     /**
      * Delete one post
      *
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/posts/{post}/delete", name="post_delete")
      * @param Post $post
      * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
@@ -117,10 +120,6 @@ class PostController extends AbstractController
      */
     public function show(Post $post)
     {
-        if (!$this->getUser() instanceof User ) {
-            throw $this->createNotFoundException("This does not exist or you not allowed be here!");
-        }
-
         $post = $this->repository->find($post);
         $totalLikes = $this->getDoctrine()->getRepository(LikeCounter::class)->findTotalLikesForPost($post);
         $favorite = $this->getDoctrine()->getRepository(Favorite::class)->findBy(['post'=> $post, 'user'=> $this->getUser()]);
@@ -137,6 +136,7 @@ class PostController extends AbstractController
     /**
      * Editing post
      *
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/posts/{post}/edit", name="post_edit")
      * @param Request $request
      * @param Post $post

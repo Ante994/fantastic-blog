@@ -18,24 +18,30 @@
                 <div class="row">
                     <div class="col-md-10">
                     <span class="post-likes">
-                        <a href="{{ path('ajax_like', { post: post.slug}) }}" class="fas fa-sign-language js-like-article"> Clap It!</a>
-                        <span class="js-like-article-count"> ({{ totalLikes ? totalLikes : 0 }})</span>
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ path('ajax_like', { post: post.slug}) }}" class="fas fa-sign-language js-like-article"> Clap It!</a>
+                        {% endif %}
+                        <i class="fas fa-heart"> <span class="js-like-article-count"> ({{ totalLikes ? totalLikes : 0 }}) </span></i>
                     </span>
                     <span>
                         <a class="fas fa-comments"> ({{ post.comments|length }}) </a>
                     </span>
                     <span class="post-favorite">
-                        {% if favorite %}
-                            <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">Remove from favorite</a>
-                        {% else %}
-                            <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star favorite js-post-favorite">Add to favorite</a>
+                        {% if is_granted('ROLE_USER') %}
+                            {% if favorite %}
+                                <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">Remove from favorite</a>
+                            {% else %}
+                                <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star favorite js-post-favorite">Add to favorite</a>
+                            {% endif %}
                         {% endif %}
                     </span>
                     </div>
                     <div class="col-md-2">
                         <span>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <a href="{{ path('post_delete', { post: post.slug }) }}" class="fas fa-trash"></a>
                             | <a href="{{ path('post_edit', { post: post.slug }) }}" class="fas fa-edit"></a>
+                            {% endif %}
                         </span>
                     </div>
                 </div>
