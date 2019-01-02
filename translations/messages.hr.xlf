@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="hr" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="hello">
+                <source>Hello</source>
+                <target>Bok</target>
+            </trans-unit>
+            <trans-unit id="fantastic_blog">
+                <source>Fantastic blog</source>
+                <target>Fantastične novosti</target>
+            </trans-unit>
+            <trans-unit id="login">
+                <source>Login</source>
+                <target>Prijavi se</target>
+            </trans-unit>
+            <trans-unit id="registration">
+                <source>Registration</source>
+                <target>Registriraj se</target>
+            </trans-unit>
+            <trans-unit id="logout">
+                <source>Logout</source>
+                <target>Odjavi se</target>
+            </trans-unit>
+            <trans-unit id="profile">
+                <source>Profile</source>
+                <target>Korisnički podatci</target>
+            </trans-unit>
+            <trans-unit id="clap_it">
+                <source>Clap It!</source>
+                <target>Sviđa mi se!</target>
+            </trans-unit>
+            <trans-unit id="favorite_add">
+                <source>Add to favorite</source>
+                <target>Dodaj u favorite</target>
+            </trans-unit>
+            <trans-unit id="favorite_remove">
+                <source>Remove from favorite</source>
+                <target>Ukloni iz favorita</target>
+            </trans-unit>
+            <trans-unit id="comment">
+                <source>Comment</source>
+                <target>Komentiraj</target>
+            </trans-unit>
+            <trans-unit id="search">
+                <source>Search</source>
+                <target>Traži</target>
+            </trans-unit>
+            <trans-unit id="sing_in">
+                <source>Sing in</source>
+                <target>Prijavi se</target>
+            </trans-unit>
+            <trans-unit id="password">
+                <source>Password</source>
+                <target>Lozinka</target>
+            </trans-unit>
+            <trans-unit id="submit">
+                <source>Submit</source>
+                <target>Potvrdi</target>
+            </trans-unit>
+            <trans-unit id="remember_me">
+                <source>Remember me</source>
+                <target>Zapamti me</target>
+            </trans-unit>
+            <trans-unit id="firstname">
+                <source>Firstname</source>
+                <target>Ime</target>
+            </trans-unit>
+            <trans-unit id="lastname">
+                <source>Lastname</source>
+                <target>Prezime</target>
+            </trans-unit>
+            <trans-unit id="repeat_password">
+                <source>Repeat Password</source>
+                <target>Ponovljena lozinka</target>
+            </trans-unit>
+            <trans-unit id="email">
+                <source>Email</source>
+                <target>E-mail</target>
+            </trans-unit>
+            <trans-unit id="new_post">
+                <source>New post</source>
+                <target>Nova objava</target>
+            </trans-unit>
+            <trans-unit id="new_tag">
+                <source>New tag</source>
+                <target>Nova kategorija</target>
+            </trans-unit>
+            <trans-unit id="favorite_post">
+                <source>Favorite post</source>
+                <target>Spremljene objave</target>
+            </trans-unit>
+            <trans-unit id="title">
+                <source>Title</source>
+                <target>Naslov</target>
+            </trans-unit>
+            <trans-unit id="content">
+                <source>Content</source>
+                <target>Sadržaj</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

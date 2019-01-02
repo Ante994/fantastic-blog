@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="tLdR2Ls" resname="Fantastic blog">
+        <source>Fantastic blog</source>
+        <target>Fantastic blog</target>
+      </trans-unit>
+      <trans-unit id="nWMiwfT" resname="Login">
+        <source>Login</source>
+        <target>Login</target>
+      </trans-unit>
+      <trans-unit id="x5Pg2aH" resname="Registration">
+        <source>Registration</source>
+        <target>Registration</target>
+      </trans-unit>
+      <trans-unit id="0FJ_Sz1" resname="Logout">
+        <source>Logout</source>
+        <target>Logout</target>
+      </trans-unit>
+      <trans-unit id="1pajW90" resname="Profile">
+        <source>Profile</source>
+        <target>Profile</target>
+      </trans-unit>
+      <trans-unit id="3CZYp3F" resname="Clap It!">
+        <source>Clap It!</source>
+        <target>Clap It!</target>
+      </trans-unit>
+      <trans-unit id="c3q2Ka0" resname="Add to favorite">
+        <source>Add to favorite</source>
+        <target>Add to favorite</target>
+      </trans-unit>
+      <trans-unit id="GVHxn58" resname="Remove from favorite">
+        <source>Remove from favorite</source>
+        <target>Remove from favorite</target>
+      </trans-unit>
+      <trans-unit id="RPXj__x" resname="Comment">
+        <source>Comment</source>
+        <target>Comment</target>
+      </trans-unit>
+      <trans-unit id="ScJmuqq" resname="Search">
+        <source>Search</source>
+        <target>Search</target>
+      </trans-unit>
+      <trans-unit id="asdasx" resname="Sing in">
+        <source>Sing in</source>
+        <target>Search</target>
+      </trans-unit>
+      <trans-unit id="password">
+        <source>Password</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="submit">
+        <source>Submit</source>
+        <target>Submit</target>
+      </trans-unit>
+      <trans-unit id="remember_me">
+        <source>Remember me</source>
+        <target>Remember me</target>
+      </trans-unit>
+      <trans-unit id="firstname">
+        <source>Firstname</source>
+        <target>First name</target>
+      </trans-unit>
+      <trans-unit id="lastname">
+        <source>Lastname</source>
+        <target>Last name</target>
+      </trans-unit>
+      <trans-unit id="repeat_password">
+        <source>Repeat Password</source>
+        <target>Repeat Password</target>
+      </trans-unit>
+      <trans-unit id="email">
+        <source>Email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="new_post">
+        <source>New post</source>
+        <target>Nova objava</target>
+      </trans-unit>
+      <trans-unit id="new_tag">
+        <source>New tag</source>
+        <target>Nova kategorija</target>
+      </trans-unit>
+      <trans-unit id="favorite_post">
+        <source>Favorite post</source>
+        <target>Favorite post</target>
+      </trans-unit>
+      <trans-unit id="title">
+        <source>Title</source>
+        <target>Title</target>
+      </trans-unit>
+      <trans-unit id="content">
+        <source>Content</source>
+        <target>Content</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

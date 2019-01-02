@@ -52,7 +52,6 @@ class PostController extends AbstractController
      */
     public function index(Request $request)
     {
-        dump($request);
         $pagination = $this->searchPost($request);
 
         return $this->render('post/index.html.twig', [

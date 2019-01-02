@@ -1,19 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
-
 {% block body %}
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-    <h1 align="center">Sign in</h1>
+    <h1 align="center">{% trans %}Sing in{% endtrans %}</h1>
         <input type="email" value="{{last_username}}" name="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus><br>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="{% trans %}Password{% endtrans %}" required>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         <div class="checkbox mb-3">
-            <label><input type="checkbox" name="_remember_me"> Remember me </label>
+            <label><input type="checkbox" name="_remember_me"> {% trans %}Remember me{% endtrans %}</label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans %}Submit{% endtrans %}</button>
 </form>
 {% endblock %}

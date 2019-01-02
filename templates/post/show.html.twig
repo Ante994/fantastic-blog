@@ -1,9 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-        <a class="btn btn-default" href="{{ path('post_index') }}">Back</a>
-        <hr>
-        <h2>{{ post.title }} </h2>
+        <h2 style="text-align: center">{{ post.title }} </h2>
         <ul class="list-group">
             <li class="list-group-item">
                 {{ post.author.displayName|capitalize }}
@@ -19,7 +17,7 @@
                     <div class="col-md-10">
                     <span class="post-likes">
                         {% if is_granted('ROLE_USER') %}
-                            <a href="{{ path('ajax_like', { post: post.slug}) }}" class="fas fa-sign-language js-like-article"> Clap It!</a>
+                            <a href="{{ path('ajax_like', { post: post.slug}) }}" class="fas fa-sign-language js-like-article"> {% trans %} Clap It! {% endtrans %}</a>
                         {% endif %}
                         <i class="fas fa-heart"> <span class="js-like-article-count"> ({{ totalLikes ? totalLikes : 0 }}) </span></i>
                     </span>
@@ -29,9 +27,9 @@
                     <span class="post-favorite">
                         {% if is_granted('ROLE_USER') %}
                             {% if favorite %}
-                                <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">Remove from favorite</a>
+                                <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">{% trans %}Remove from favorite{% endtrans %}</a>
                             {% else %}
-                                <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star favorite js-post-favorite">Add to favorite</a>
+                                <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star favorite js-post-favorite">{% trans %}Add to favorite{% endtrans %}</a>
                             {% endif %}
                         {% endif %}
                     </span>
@@ -124,10 +122,10 @@
                         url: '{{ path('ajax_favorite') }}',
                     }).done(function (data) {
                         if (data.favorite === true) {
-                            $('.post-favorite').append('<a href="{{ path('ajax_favorite', { slug: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">Remove from favorite</a>');
+                            $('.post-favorite').append('<a href="{{ path('ajax_favorite', { slug: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">{% trans %}Remove from favorite{% endtrans %}</a>');
                             $('.fas.fa-star.favorite').hide();
                         } else {
-                            $('.post-favorite').append('<a href="{{ path('ajax_favorite', { slug: post.slug}) }}" class="fas fa-star favorite js-post-favorite">Add to favorites</a>');
+                            $('.post-favorite').append('<a href="{{ path('ajax_favorite', { slug: post.slug}) }}" class="fas fa-star favorite js-post-favorite">{% trans %}Add to favorite{% endtrans %}</a>');
                             $('.fas.fa-star.unfavorite').hide();
                         }
                     });

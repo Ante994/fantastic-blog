@@ -4,7 +4,6 @@
     <h1>
         {{ user.displayName|upper }}
         <a href="{{ path('user_edit', { user: user.id }) }}" class="fas fa-edit"></a>
-
             <span class="fa fa-pencil"></span>
         </a>
     </h1>
@@ -12,18 +11,18 @@
     <table class="table">
         <tbody>
         <tr>
-            <th>Name</th>
+            <th>{% trans %}Firstname{% endtrans %}</th>
             <td>{{ user.firstname }}</td>
         </tr>
         <tr>
-            <th>Email</th>
+            <th>{% trans %}Email{% endtrans %}</th>
             <td>{{ user.email }}</td>
         </tr>
         </tbody>
     </table>
     <div class="row">
         <div class="col-md-10">
-            <h4>Favorite posts</h4>
+            <h4>{% trans %}Favorite post{% endtrans %}</h4>
             {% for favorite in favorites %}
                 <li class="list-group-item">
                     <a href="{{ path('post_show', { post: favorite['slug'] }) }}">   {{ favorite['title'] }}</a>
