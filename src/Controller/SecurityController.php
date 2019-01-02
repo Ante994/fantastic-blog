@@ -24,7 +24,10 @@ class SecurityController extends AbstractController
     /**
      * Login user
      *
-     * @Route("/login", name="login")
+     * @Route({
+     *     "hr": "/prijava",
+     *     "en": "/login"
+     * }, name="login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
@@ -39,7 +42,10 @@ class SecurityController extends AbstractController
     /**
      * Logout user
      *
-     * @Route("/logout", name="logout")
+     * @Route({
+     *     "hr": "/odjava",
+     *     "en": "/logout"
+     * }, name="logout")
      * @throws \Exception
      */
     public function logout()

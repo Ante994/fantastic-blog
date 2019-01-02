@@ -52,6 +52,7 @@ class PostController extends AbstractController
      */
     public function index(Request $request)
     {
+        dump($request);
         $pagination = $this->searchPost($request);
 
         return $this->render('post/index.html.twig', [
@@ -65,6 +66,10 @@ class PostController extends AbstractController
      *
      * @IsGranted("ROLE_ADMIN")
      * @Route("/posts/new", name="post_new")
+     * @Route({
+     *     "hr": "/objave/nova",
+     *     "en": "/posts/new"
+     * }, name="post_new")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
@@ -91,7 +96,10 @@ class PostController extends AbstractController
      * Delete one post
      *
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/posts/{post}/delete", name="post_delete")
+     * @Route({
+     *     "hr": "/objave/{post}/brisanje",
+     *     "en": "/posts/{post}/delete"
+     * }, name="post_delete")
      * @param Post $post
      * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
      * @return Response
@@ -113,7 +121,10 @@ class PostController extends AbstractController
     /**
      * Show one post with all details
      *
-     * @Route("/posts/{post}", name="post_show")
+     * @Route({
+     *     "hr": "/objave/{post}",
+     *     "en": "/posts/{post}"
+     * }, name="post_show")
      * @param Post $post
      * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
      * @return Response
@@ -137,7 +148,10 @@ class PostController extends AbstractController
      * Editing post
      *
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/posts/{post}/edit", name="post_edit")
+     * @Route({
+     *     "hr": "/objave/{post}/editiranje",
+     *     "en": "/posts/{post}/edit"
+     * }, name="post_edit")
      * @param Request $request
      * @param Post $post
      * @ParamConverter("post", options={"mapping": {"post": "slug"}}))

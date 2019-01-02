@@ -27,7 +27,10 @@ class RegistrationController extends AbstractController
      * Registration user
      *
      * @param Request $request
-     * @Route("/register", name="register")
+     * @Route({
+     *     "hr": "/registracija",
+     *     "en": "/register"
+     * }, name="register")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function register(Request $request)

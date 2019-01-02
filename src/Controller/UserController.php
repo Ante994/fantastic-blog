@@ -39,7 +39,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/profile", name="user_show")
+     * @Route({
+     *     "hr": "/korisnički-profil",
+     *     "en": "/profile"
+     * }, name="user_show")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function show(): Response
@@ -57,7 +60,10 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/profile/{user}", name="user_edit")
+     * @Route({
+     *     "hr": "/korisnički-profil/uređivanje/{user}",
+     *     "en": "/profile/edit/{user}"
+     * }, name="user_edit")
      * @param Request $request
      * @param User $user
      * @return \Symfony\Component\HttpFoundation\Response
