@@ -9,6 +9,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Post;
+use App\Entity\PostDetail;
 use App\Entity\Tag;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +31,16 @@ class PostTest extends TestCase
         $this->assertCount(2, $post->getTags());
     }
 
+    public function testItCreatePostAndContent()
+    {
+        $post = new Post();
+        $post->setTitle('main title');
+        $content = new PostDetail();
+        $content->setContent('main content');
+        $post->setPostDetail($content);
 
+        $this->assertEquals('main content', $post->getPostDetail()->getContent());
+    }
 
 
 }

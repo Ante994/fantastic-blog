@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="asdasx" resname="Sing in">
         <source>Sing in</source>
-        <target>Search</target>
+        <target>Sing in</target>
       </trans-unit>
       <trans-unit id="password">
         <source>Password</source>
@@ -79,11 +79,11 @@
       </trans-unit>
       <trans-unit id="new_post">
         <source>New post</source>
-        <target>Nova objava</target>
+        <target>New post</target>
       </trans-unit>
       <trans-unit id="new_tag">
         <source>New tag</source>
-        <target>Nova kategorija</target>
+        <target>New tag</target>
       </trans-unit>
       <trans-unit id="favorite_post">
         <source>Favorite post</source>

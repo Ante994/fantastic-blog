@@ -1,14 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <div class="col"></div>
-        <div class="col">
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button class="btn btn-md btn-primary btn-block" type="submit">{% trans %}Submit{% endtrans %}</button>
-            {{ form_end(form) }}
-        </div>
-        <div class="col"></div>
-    </div>
+    <h3 style="text-align: center">Create new post</h3>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-md btn-primary btn-block" type="submit">{% trans %}Submit{% endtrans %}</button>
+    {{ form_end(form) }}
+
 {% endblock %}

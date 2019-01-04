@@ -47,9 +47,13 @@ class NewPostListener
             return;
         }
 
-        /** @var User $user */
-        $user = $this->security->getUser();
-        $entity->setAuthor($user);
+        // If we use data fixtures then user is set random
+        if (!$entity->getAuthor()) {
+            /** @var User $user */
+            $user = $this->security->getUser();
+            $entity->setAuthor($user);
+        }
+
         $entity->setStatus(['enabled']);
         $slug = $this->slugger->makeSlug($entity->getTitle());
         $entity->setSlug($slug.'-'.rand(100, 999));

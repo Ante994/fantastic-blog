@@ -54,9 +54,9 @@ class PostController extends AbstractController
     {
         $pagination = $this->searchPost($request);
 
-        return $this->render('post/index.html.twig', [
-                'pagination' => $pagination,
-            ]
+        return $this->render(
+            'post/index.html.twig',
+            array('pagination' => $pagination)
         );
     }
 
@@ -64,7 +64,6 @@ class PostController extends AbstractController
      * Creating new post
      *
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/posts/new", name="post_new")
      * @Route({
      *     "hr": "/objave/nova",
      *     "en": "/posts/new"

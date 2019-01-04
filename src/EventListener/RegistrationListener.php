@@ -47,6 +47,7 @@ class RegistrationListener
 
         $entity->setEnabled(1);
         $entity->setRoles(['ROLE_USER']);
+
         if ('admin' == explode("@", $entity->getEmail(), 2)[0]) {
             $entity->setRoles(['ROLE_ADMIN']);
         }
