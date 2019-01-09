@@ -8,15 +8,12 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Repository\CommentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -39,18 +36,17 @@ class CommentController extends AbstractController
     /**
      * Ajax call for creating comment on post
      *
-     * @Route("/ajax-comment", name="ajax_comment")
      * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface|string|Response
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
-    public function ajaxCreateComment(Request $request)
+    public function ajaxComment(Request $request)
     {
         $post = $this->getDoctrine()->getRepository(Post::class)->find($request->get('post'));
         $content = $request->get('content');
 
         if ($request->isXmlHttpRequest() && $post instanceof Post && $content) {
-            $comment = $this->createComment($post, $content);
+            $comment = $this->new($post, $content);
 
             return $this->json([
                 'comment' => $comment->getContent(),
@@ -65,17 +61,16 @@ class CommentController extends AbstractController
     /**
      * Ajax call for deleting comment on post
      *
-     * @Route("/ajax-delete", name="ajax_comment_delete")
      * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface|string|Response
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
-    public function ajaxDeleteComment(Request $request)
+    public function ajaxDelete(Request $request)
     {
         $comment = $this->repository->find($request->get('comment'));
 
         if ($request->isXmlHttpRequest() && $comment instanceof Comment) {
-            $this->deleteComment($comment);
+            $this->delete($comment);
 
             return $this->json(['deleted' => true], 200);
         }
@@ -85,12 +80,13 @@ class CommentController extends AbstractController
 
     /**
      * Creating new comment on request object from ajax call
+     *
      * @param Post $post
      * @param string $content
      * @return Comment
      * @throws \Exception
      */
-    public function createComment(Post $post, string $content): Comment
+    public function new(Post $post, string $content): Comment
     {
         $comment = new Comment();
         $comment->setContent($content);
@@ -105,13 +101,13 @@ class CommentController extends AbstractController
         return $comment;
     }
 
-
     /**
      * Deleting comment
+     *
      * @param Comment $comment
      * @throws \Exception
      */
-    public function deleteComment(Comment $comment): void
+    public function delete(Comment $comment): void
     {
         if ($comment->getAuthor() === $this->getUser() || $this->isGranted('ROLE_ADMIN')) {
             $entityManager = $this->getDoctrine()->getManager();

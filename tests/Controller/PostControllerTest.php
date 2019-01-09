@@ -94,7 +94,7 @@ class PostControllerTest extends WebTestCase
     {
         return static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin@fb.com',
-            'PHP_AUTH_PW'   => '123',
+            'PHP_AUTH_PW'   => '1234',
             'HTTP_HOST' => 'fantastic-blog.puphpet'
         ));
     }
@@ -129,6 +129,7 @@ class PostControllerTest extends WebTestCase
 
         $client->submit($form);
 
+
     }
 
     public function testUserCanRegister()
@@ -139,8 +140,8 @@ class PostControllerTest extends WebTestCase
             'user[firstname]' => 'fantastic',
             'user[lastname]' => 'tester',
             'user[email]' => 'ante@fb.com',
-            'user[plainPassword][first]' => '123',
-            'user[plainPassword][second]' => '123',
+            'user[plainPassword][first]' => '1234',
+            'user[plainPassword][second]' => '1234',
         ]);
 
     }

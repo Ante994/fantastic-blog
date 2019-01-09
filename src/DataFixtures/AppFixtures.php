@@ -14,7 +14,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Nelmio\Alice\Loader\NativeLoader;
 
 /**
- * DataFixtures class to fill up DB with some dummy data for testing
+ * AppFixture class to fill up DB with dummy data for testing
  *
  * Class AppFixtures
  * @package App\DataFixtures

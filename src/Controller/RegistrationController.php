@@ -12,7 +12,6 @@ use App\Entity\User;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -27,10 +26,6 @@ class RegistrationController extends AbstractController
      * Registration user
      *
      * @param Request $request
-     * @Route({
-     *     "hr": "/registracija",
-     *     "en": "/register"
-     * }, name="register")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function register(Request $request)

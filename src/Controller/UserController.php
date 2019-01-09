@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Comment;
 use App\Entity\Favorite;
 use App\Entity\User;
@@ -18,7 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -39,10 +37,8 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route({
-     *     "hr": "/korisnički-profil",
-     *     "en": "/profile"
-     * }, name="user_show")
+     * Show user profile
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function show(): Response
@@ -60,10 +56,8 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route({
-     *     "hr": "/korisnički-profil/uređivanje/{user}",
-     *     "en": "/profile/edit/{user}"
-     * }, name="user_edit")
+     * User can edit yourself profile
+     *
      * @param Request $request
      * @param User $user
      * @return \Symfony\Component\HttpFoundation\Response

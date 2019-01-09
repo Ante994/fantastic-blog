@@ -15,7 +15,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -38,9 +37,8 @@ class FavoriteController extends AbstractController
     /**
      * Ajax call for favorite post
      *
-     * @Route("/ajax-favorite", name="ajax_favorite")
      * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface|string|Response
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function ajaxFavorite(Request $request)
     {
