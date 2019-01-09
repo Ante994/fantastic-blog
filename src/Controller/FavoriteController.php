@@ -57,7 +57,7 @@ class FavoriteController extends AbstractController
      * @param Post $post
      * @return array
      */
-    public function favoritePost(Post $post)
+    private function favoritePost(Post $post)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $postFavorite = $this->repository->findOneBy([

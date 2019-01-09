@@ -107,7 +107,7 @@ class CommentController extends AbstractController
      * @param Comment $comment
      * @throws \Exception
      */
-    public function delete(Comment $comment): void
+    private function delete(Comment $comment): void
     {
         if ($comment->getAuthor() === $this->getUser() || $this->isGranted('ROLE_ADMIN')) {
             $entityManager = $this->getDoctrine()->getManager();

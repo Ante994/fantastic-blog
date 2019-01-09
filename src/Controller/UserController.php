@@ -62,7 +62,7 @@ class UserController extends AbstractController
      * @param User $user
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, User $user): Response
+    private function edit(Request $request, User $user): Response
     {
         $user = $this->repository->find($user);
 

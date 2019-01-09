@@ -52,7 +52,7 @@ class RegistrationController extends AbstractController
     /**
      * @param User $user
      */
-    public function loginUserAfterRegistration(User $user): void
+    private function loginUserAfterRegistration(User $user): void
     {
         $token = new UsernamePasswordToken(
             $user,

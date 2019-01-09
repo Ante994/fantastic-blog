@@ -102,7 +102,7 @@ class PostController extends AbstractController
      * @param Request $request
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
-    public function paginate(Request $request): \Knp\Component\Pager\Pagination\PaginationInterface
+    private function paginate(Request $request): \Knp\Component\Pager\Pagination\PaginationInterface
     {
         $search = $request->query->get('q');
         if ($search) {

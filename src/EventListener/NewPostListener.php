@@ -11,6 +11,7 @@ namespace App\EventListener;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Service\Slugger;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Security;
 
@@ -25,12 +26,13 @@ class NewPostListener
     private $slugger;
     private $security;
 
+
     /**
      * NewPostListener constructor.
      * @param Security $security
-     * @param Slugger $slugger
+     * @param Slugify $slugger
      */
-    public function __construct(Security $security, Slugger $slugger)
+    public function __construct(Security $security, Slugify $slugger)
     {
         $this->slugger = $slugger;
         $this->security = $security;
@@ -55,7 +57,7 @@ class NewPostListener
         }
 
         $entity->setStatus(['enabled']);
-        $slug = $this->slugger->makeSlug($entity->getTitle());
+        $slug = $this->slugger->slugify($entity->getTitle());
         $entity->setSlug($slug.'-'.rand(100, 999));
     }
 }

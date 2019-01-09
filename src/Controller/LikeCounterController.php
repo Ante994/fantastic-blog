@@ -59,7 +59,7 @@ class LikeCounterController extends AbstractController
      *
      * @param Post $post
      */
-    public function likePost(Post $post):void
+    private function likePost(Post $post):void
     {
         $postLike = $this->repository->findOneBy([
             'post' => $post,
