@@ -8,13 +8,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Favorite;
 use App\Entity\Post;
-use App\Repository\FavoriteRepository;
+use App\Service\Favoriter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -23,15 +21,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class FavoriteController extends AbstractController
 {
-    private $repository;
+    private $favoriter;
 
     /**
      * FavoriteController constructor.
-     * @param FavoriteRepository $favoriteRepository
+     * @param Favoriter $favoritePost
      */
-    public function __construct(FavoriteRepository $favoriteRepository)
+    public function __construct(Favoriter $favoritePost)
     {
-        $this->repository  = $favoriteRepository;
+        $this->favoriter = $favoritePost;
     }
 
     /**
@@ -44,41 +42,11 @@ class FavoriteController extends AbstractController
     {
         $post = $this->getDoctrine()->getRepository(Post::class)->find($post = $request->get('post'));
         if ($request->isXmlHttpRequest() && $post instanceof Post) {
-            $favorite = $this->favoritePost($post);
+            $favorite = $this->favoriter->favorite($post);
+
             return $this->json($favorite, 200);
         }
 
         throw $this->createNotFoundException('Not found');
     }
-
-    /**
-     * Function for making post favorite or removing
-     *
-     * @param Post $post
-     * @return array
-     */
-    private function favoritePost(Post $post)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $postFavorite = $this->repository->findOneBy([
-            'post' => $post,
-            'user' => $this->getUser(),
-        ]);
-
-        if (!$postFavorite instanceof Favorite) {
-            $postFavorite = new Favorite();
-            $postFavorite->setUser($this->getUser());
-            $postFavorite->setPost($post);
-            $favorite = ['favorite' => true];
-            $entityManager->persist($postFavorite);
-        } else {
-            $favorite = ['favorite' => false];
-            $entityManager->remove($postFavorite);
-
-        }
-        $entityManager->flush();
-
-        return $favorite;
-    }
-
 }

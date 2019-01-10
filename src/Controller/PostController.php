@@ -13,7 +13,7 @@ use App\Entity\LikeCounter;
 use App\Entity\Post;
 use App\Form\CommentType;
 use App\Repository\PostRepository;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Service\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,13 +30,13 @@ class PostController extends AbstractController
 
     /**
      * PostController constructor.
-     * @param PaginatorInterface $paginator
+     * @param Paginator $paginator
      * @param PostRepository $postRepository
      */
-    public function __construct(PaginatorInterface $paginator, PostRepository $postRepository)
+    public function __construct(Paginator $paginator, PostRepository $postRepository)
     {
         $this->paginator = $paginator;
-        $this->repository  = $postRepository;
+        $this->repository = $postRepository;
     }
 
     /**
@@ -47,7 +47,9 @@ class PostController extends AbstractController
      */
     public function index(Request $request)
     {
-        $pagination = $this->paginate($request);
+        $param = $request->query->get('q');
+        $posts = $this->search($param);
+        $pagination = $this->paginator->paginate($posts, $request);
 
         return $this->render(
             'post/index.html.twig',
@@ -66,16 +68,17 @@ class PostController extends AbstractController
     {
         $post = $this->repository->find($post);
         $totalLikes = $this->getDoctrine()->getRepository(LikeCounter::class)->findTotalLikesForPost($post);
-        $favorite = $this->getDoctrine()->getRepository(Favorite::class)->findBy(['post'=> $post, 'user'=> $this->getUser()]);
+        $favorite = $this->getDoctrine()->getRepository(Favorite::class)->findBy(['post' => $post, 'user' => $this->getUser()]);
 
         return $this->render('post/show.html.twig', [
-            'post' => $post,
-            'totalLikes' => $totalLikes[1],
-            'favorite' => $favorite,
-            'form' => $this->createForm(CommentType::class)->createView(),
+                'post' => $post,
+                'totalLikes' => $totalLikes[1],
+                'favorite' => $favorite,
+                'form' => $this->createForm(CommentType::class)->createView(),
             ]
         );
     }
+
     /**
      * Ajax call for paginate posts
      *
@@ -85,7 +88,9 @@ class PostController extends AbstractController
     public function ajaxIndex(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            $pagination = $this->paginate($request);
+            $param = $request->query->get('q');
+            $posts = $this->filter($param);
+            $pagination = $this->paginator->paginate($posts, $request);
 
             return $this->render('post/index_paginate.html.twig', [
                     'pagination' => $pagination,
@@ -97,26 +102,19 @@ class PostController extends AbstractController
     }
 
     /**
-     * Helper function for paginate posts
+     * Filter function for post if is passed keyword else found all
      *
-     * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     * @param String $param
+     * @return Post[]
      */
-    private function paginate(Request $request): \Knp\Component\Pager\Pagination\PaginationInterface
+    private function filter(String $param='')
     {
-        $search = $request->query->get('q');
-        if ($search) {
-            $posts = $this->repository->search($search);
+        if ($param) {
+            $objects = $this->repository->search($param);
         } else {
-            $posts = $this->repository->findAll();
+            $objects = $this->repository->findAll();
         }
 
-        $pagination = $this->paginator->paginate(
-            $posts,
-            $request->query->getInt('page', 1),
-            5
-        );
-
-        return $pagination;
+        return $objects;
     }
 }

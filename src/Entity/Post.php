@@ -57,7 +57,7 @@ class Post
     private $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="post",  orphanRemoval=true)
      */
     private $comments;
 
@@ -66,10 +66,21 @@ class Post
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\LikeCounter", mappedBy="post", orphanRemoval=true)
+     */
+    private $likeCounters;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Favorite", mappedBy="post", orphanRemoval=true)
+     */
+    private $favorite;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->likeCounters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -210,6 +221,37 @@ class Post
             // set the owning side to null (unless already changed)
             if ($comment->getPost() === $this) {
                 $comment->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LikeCounter[]
+     */
+    public function getLikeCounters(): Collection
+    {
+        return $this->likeCounters;
+    }
+
+    public function addLikeCounter(LikeCounter $likeCounter): self
+    {
+        if (!$this->likeCounters->contains($likeCounter)) {
+            $this->likeCounters[] = $likeCounter;
+            $likeCounter->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikeCounter(LikeCounter $likeCounter): self
+    {
+        if ($this->likeCounters->contains($likeCounter)) {
+            $this->likeCounters->removeElement($likeCounter);
+            // set the owning side to null (unless already changed)
+            if ($likeCounter->getPost() === $this) {
+                $likeCounter->setPost(null);
             }
         }
 

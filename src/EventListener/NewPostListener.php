@@ -10,8 +10,7 @@ namespace App\EventListener;
 
 use App\Entity\Post;
 use App\Entity\User;
-use App\Service\Slugger;
-use Cocur\Slugify\Slugify;
+use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Security;
 
@@ -26,13 +25,12 @@ class NewPostListener
     private $slugger;
     private $security;
 
-
     /**
      * NewPostListener constructor.
      * @param Security $security
-     * @param Slugify $slugger
+     * @param SlugifyInterface $slugger
      */
-    public function __construct(Security $security, Slugify $slugger)
+    public function __construct(Security $security, SlugifyInterface $slugger)
     {
         $this->slugger = $slugger;
         $this->security = $security;

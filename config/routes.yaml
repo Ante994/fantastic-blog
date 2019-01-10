@@ -40,7 +40,7 @@ post_show:
     hr: /objave/{post}
     en: /post/{post}
 
-ajax_index:
+ajax_post_index:
   controller: App\Controller\PostController::ajaxIndex
   path: /ajax-post
 

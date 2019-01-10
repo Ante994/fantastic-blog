@@ -8,9 +8,9 @@
 
 namespace App\Controller;
 
-use App\Entity\LikeCounter;
 use App\Entity\Post;
 use App\Repository\LikeCounterRepository;
+use App\Service\Liker;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,19 +22,21 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class LikeCounterController extends AbstractController
 {
+    private $liker;
     private $repository;
-
     /**
      * LikeCounterController constructor.
-     * @param LikeCounterRepository $likeCounterRepository
+     * @param LikeCounterRepository $repository
+     * @param Liker $liker
      */
-    public function __construct(LikeCounterRepository $likeCounterRepository)
+    public function __construct(LikeCounterRepository $repository, Liker $liker)
     {
-        $this->repository = $likeCounterRepository;
+        $this->repository = $repository;
+        $this->liker = $liker;
     }
 
     /**
-     * Ajax call for like post
+     * Ajax call for like post and return total likes for post
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -43,43 +45,15 @@ class LikeCounterController extends AbstractController
     {
         if ($request->isXmlHttpRequest()) {
             $post = $this->getDoctrine()->getRepository(Post::class)->find($request->get('post'));
-            $this->likePost($post);
+            $this->liker->likePost($post);
             $totalLikes = $this->repository->findTotalLikesForPost($post);
 
-            return $this->json(['likes' => $totalLikes[1],
-                'likes2' => $totalLikes]);
+            return $this->json([
+                'likes' => $totalLikes[1],
+            ]);
         }
 
         throw $this->createNotFoundException('Not found');
     }
-
-
-    /**
-     * Helper function for liking post
-     *
-     * @param Post $post
-     */
-    private function likePost(Post $post):void
-    {
-        $postLike = $this->repository->findOneBy([
-            'post' => $post,
-            'owner' => $this->getUser(),
-        ]);
-
-        if ($postLike instanceof LikeCounter) {
-            $postLike->setValue(1);
-
-        } else {
-            $postLike = new LikeCounter();
-            $postLike->setPost($post);
-            $postLike->setOwner($this->getUser());
-            $postLike->setValue(1);
-        }
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($postLike);
-        $entityManager->flush();
-    }
-
 
 }

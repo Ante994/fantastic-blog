@@ -16,11 +16,7 @@ class LikeCounter
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Post")
-     */
-    private $post;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      */
@@ -30,6 +26,12 @@ class LikeCounter
      * @ORM\Column(type="integer", nullable=true)
      */
     private $value;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="likeCounters")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $post;
 
     /**
      * LikeCounter constructor.
@@ -44,17 +46,6 @@ class LikeCounter
         return $this->id;
     }
 
-    public function getPost(): ?Post
-    {
-        return $this->post;
-    }
-
-    public function setPost(?Post $post): self
-    {
-        $this->post = $post;
-
-        return $this;
-    }
 
     public function getOwner(): ?User
     {
@@ -73,11 +64,28 @@ class LikeCounter
         return $this->value;
     }
 
-    public function setValue(?int $value): self
+    public function setValue(?int $value=1): self
     {
         $this->value += $value;
 
         return $this;
+    }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Post $post): self
+    {
+        $this->post = $post;
+
+        return $this;
+    }
+
+    public function giveOneLike()
+    {
+        $this->value +=1;
     }
 
 
