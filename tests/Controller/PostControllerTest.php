@@ -8,141 +8,132 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class PostControllerTest extends WebTestCase
 {
-    public function testShowPostIndexPage()
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', "/");
 
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(
-            0,
-            $crawler->filter('html:contains("Fantastic blog")')->count()
-        );
-    }
-
-    public function testPageContainsTitle()
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', "/");
-
-        $this->assertGreaterThan(
-            0,
-            $crawler->filter('html:contains("Fantastic blog")')->count()
-        );
-    }
-
-    /**
-     * @dataProvider provideUrls
-     * @param $url
-     */
-    public function testPagesIsSuccessfulOpened($url)
-    {
-        $client = self::createClient();
-        $client->request('GET', $url);
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
-    }
-
-    public function provideUrls()
-    {
-        return array(
-            array('/'),
-            array('/login'),
-            array('/register'),
-        );
-    }
-
-
-    /**
-     * @dataProvider provideUrlsForAdmin
-     * @param $url
-     */
-    public function testPageIsFalseForDefaultUser($url)
-    {
-        $client = self::createClient();
-        $client->request('GET', $url);
-
-        $this->assertFalse($client->getResponse()->isSuccessful());
-    }
-
-
-    /**
-     * @dataProvider provideUrlsForAdmin
-     * @param $url
-     */
-    public function testPageIsSuccessfulForAdmin($url)
-    {
-        $client = $this->loginAdmin();
-        $client->request('GET', $url);
-
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
-    }
-
-    public function provideUrlsForAdmin()
-    {
-        return array(
-            array('/tags/new'),
-            array('/posts/new'),
-        );
-    }
-
-    public function loginAdmin()
+    private function loginUser()
     {
         return static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'admin@fb.com',
+            'PHP_AUTH_USER' => 'ante@fb.com',
             'PHP_AUTH_PW'   => '1234',
             'HTTP_HOST' => 'fantastic-blog.puphpet'
         ));
     }
 
-    public function testAdminCanClickOnNewPostCreate()
+    public function testShowPostIndexPage()
     {
-        $client = $this->loginAdmin();
+        $client = static::createClient();
+        $client->request('GET', "/");
+
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+    }
+
+    public function testIndexPageContainsTitleTranslation()
+    {
+        $client = static::createClient();
         $crawler = $client->request('GET', "/");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
 
-        $link = $crawler
-           ->filter('a:contains("New post")')
-           ->eq(0)
-           ->link();
-
-        $page = $client->click($link);
-        $this->assertEquals('Create new post', $page->filter('h3')->first()->text());
-
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('html:contains("Fantastic blog")')->count()
+        );
     }
 
-
-    public function testAdminSubmitPostForm()
+    public function testIndexPageContainsTitleHrvTranslation()
     {
-        $client = $this->loginAdmin();
-        $crawler = $client->request('GET', "/posts/new");
+        $client = static::createClient();
+        $crawler = $client->request('GET', "/hr/");
+
         $this->assertEquals(200,  $client->getResponse()->getStatusCode());
-
-        $form = $crawler->selectButton('Submit')->form();
-
-        $form['post[title]'] = '';
-        $form['post[postDetail][content]'] = 'Hey there!';
-
-        $client->submit($form);
-
-
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('html:contains("Fantastične novosti")')->count()
+        );
     }
 
-    public function testUserCanRegister()
+    public function testPostDetailsPageWorks()
     {
         $client = self::createClient();
-        $client->request('GET', '/register');
-        $client->submitForm('Submit', [
-            'user[firstname]' => 'fantastic',
-            'user[lastname]' => 'tester',
-            'user[email]' => 'ante@fb.com',
-            'user[plainPassword][first]' => '1234',
-            'user[plainPassword][second]' => '1234',
-        ]);
+        $client->request('GET', "/posts/test-1");
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
 
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+
+    public function testUserCanLikePost()
+    {
+        $client = $this->loginUser();
+        $client->request('GET', "/posts/test-1");
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $container = self::$kernel->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        $postRepo = $em->getRepository('App:Post');
+        $post = $postRepo->findOneBy(['slug' => 'test-1']);
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $client->xmlHttpRequest('POST', '/ajax-like', array('post' => $post));
+
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+    }
+
+    public function testUserCanFavoritePost()
+    {
+        $client = $this->loginUser();
+        $client->request('GET', "/posts/test-1");
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $container = self::$kernel->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        $postRepo = $em->getRepository('App:Post');
+        $post = $postRepo->findOneBy(['slug' => 'test-1']);
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $client->xmlHttpRequest('POST', '/ajax-favorite', array('post' => $post));
+
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+
+
+    }
+
+    public function testUserCanCommentPost()
+    {
+        $client = $this->loginUser();
+        $client->request('GET', "/posts/test-1");
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $container = self::$kernel->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        $postRepo = $em->getRepository('App:Post');
+        $post = $postRepo->findOneBy(['slug' => 'test-1']);
+        $client->xmlHttpRequest('POST', '/ajax-comment', array('post' => $post, 'content' => 'test comment'));
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+    }
+
+    public function testUserCanDeleteCommentPost()
+    {
+        $client = $this->loginUser();
+        $client->request('GET', "/posts/test-1");
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isSuccessful());
+
+        $container = self::$kernel->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        $commentRepo = $em->getRepository('App:Comment');
+
+        $postRepo = $em->getRepository('App:Post');
+        $post = $postRepo->findOneBy(['slug' => 'test-1']);
+
+        $comment = $commentRepo->findOneBy(['content' => 'test comment for delete', 'author' => 24]);
+
+        $client->xmlHttpRequest('POST', '/ajax-comment', array('post' => $post, 'content' => 'test comment for delete'));
+
+        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+
+        $client->xmlHttpRequest('DELETE', '/ajax-delete', array('comment' => $comment));
     }
 }

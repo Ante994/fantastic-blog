@@ -24,7 +24,8 @@ class Favoriter
     private $security;
 
     /**
-     * FavoriteController constructor.
+     * Favoriter service constructor
+     *
      * @param FavoriteRepository $favoriteRepository
      * @param EntityManagerInterface $entityManager
      * @param Security $security
@@ -89,13 +90,9 @@ class Favoriter
         $favorite->setUser($user);
         $favorite->setPost($post);
 
-        try {
-            $this->entityManager->persist($favorite);
-            $this->entityManager->flush();
-            $favoriteJSON = ['favorite' => true];
-        } catch (ORMException $e) {
-            $favoriteJSON = ['error' => $e];
-        }
+        $this->entityManager->persist($favorite);
+        $this->entityManager->flush();
+        $favoriteJSON = ['favorite' => true];
 
         return $favoriteJSON;
     }

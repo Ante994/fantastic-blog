@@ -89,13 +89,17 @@
         <source>Favorite post</source>
         <target>Favorite post</target>
       </trans-unit>
-      <trans-unit id="title">
+      <trans-unit id="post_title">
         <source>Title</source>
         <target>Title</target>
       </trans-unit>
-      <trans-unit id="content">
+      <trans-unit id="post_content">
         <source>Content</source>
         <target>Content</target>
+      </trans-unit>
+      <trans-unit id="tag_name">
+        <source>Name</source>
+        <target>Name</target>
       </trans-unit>
     </body>
   </file>

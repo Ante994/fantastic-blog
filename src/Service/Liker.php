@@ -8,7 +8,6 @@
 
 namespace App\Service;
 
-
 use App\Entity\LikeCounter;
 use App\Entity\Post;
 use App\Entity\User;
@@ -21,8 +20,10 @@ class Liker
     private $repository;
     private $entityManager;
     private $security;
+
     /**
-     * LikeCounterController constructor.
+     * Liker service constructor
+     * 
      * @param LikeCounterRepository $likeCounterRepository
      * @param Security $security
      * @param EntityManagerInterface $entityManager

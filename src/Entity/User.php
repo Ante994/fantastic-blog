@@ -9,7 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity("email")
+ * @UniqueEntity(
+ *     message="Email is already used",
+ *     fields={"email"}
+ * )
  */
 class User implements UserInterface, \Serializable
 
@@ -23,6 +26,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @Assert\NotBlank
+     *      message = "Name should not be blank",
      * @ORM\Column(type="string", length=30)
      * @Assert\Length(
      *      min = 2,
@@ -41,6 +45,7 @@ class User implements UserInterface, \Serializable
      *      maxMessage = "Your last name cannot be longer than {{ limit }} characters"
      * )
      * @Assert\NotBlank
+     *      blankMessage = "Last name should not be blank",
      * @ORM\Column(type="string", length=50)
      */
     private $lastname;
@@ -48,12 +53,13 @@ class User implements UserInterface, \Serializable
     /**
      * @Assert\NotBlank
      * @Assert\Email
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
 
     /**
      * @Assert\NotBlank
+     *      blankMessage = "Email should not be blank",
      * @Assert\Length(max=4096)
      */
     private $plainPassword;

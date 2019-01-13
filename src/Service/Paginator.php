@@ -18,7 +18,8 @@ class Paginator
     private $limit;
 
     /**
-     * PostController constructor.
+     * Paginator service constructor
+     *
      * @param PaginatorInterface $paginator
      */
     public function __construct(PaginatorInterface $paginator)

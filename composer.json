@@ -71,6 +71,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.1",
+        "liip/functional-test-bundle": "~2.0@alpha",
         "nelmio/alice": "^3.5",
         "symfony/browser-kit": "4.2.*",
         "symfony/css-selector": "4.2.*",

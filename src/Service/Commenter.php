@@ -23,7 +23,7 @@ class Commenter
     private $security;
 
     /**
-     * FavoriteController constructor.
+     * Commenter service constructor
      * @param CommentRepository $commentRepository
      * @param EntityManagerInterface $entityManager
      * @param Security $security
@@ -36,7 +36,7 @@ class Commenter
     }
 
     /**
-     * Creating new comment
+     * Creating comment
      *
      * @param Post $post
      * @param string $content

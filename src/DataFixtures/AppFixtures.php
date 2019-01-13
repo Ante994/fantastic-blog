@@ -27,16 +27,6 @@ class AppFixtures extends Fixture
 
         $objectSet = $loader->loadData([
             User::class => [
-                'user_{1..9}' => [
-                    'firstname' => '<username()>',
-                    'lastname' => '<lastName()>',
-                    'display_name' => '<firstName()> <lastName()>',
-                    'registration_date' => '<date_create()>',
-                    'plain_password' => '1234',
-                    'email' => '<email()>',
-                    'roles' => '[ROLE_USER]',
-                    'enabled' => 1,
-                ],
                 'user_admin' => [
                     'firstname' => 'Ante',
                     'lastname' => 'Domjanovic',
@@ -47,6 +37,26 @@ class AppFixtures extends Fixture
                     'roles' => '[ROLE_ADMIN]',
                     'enabled' => 1,
                 ],
+                'user' => [
+                    'firstname' => 'Ante',
+                    'lastname' => 'Tester',
+                    'display_name' => '<firstName()> <lastName()>',
+                    'registration_date' => '<date_create()>',
+                    'plain_password' => '1234',
+                    'email' => 'ante@fb.com',
+                    'roles' => '[ROLE_USER]',
+                    'enabled' => 1,
+                ],
+                'user_{1..9}' => [
+                    'firstname' => '<username()>',
+                    'lastname' => '<lastName()>',
+                    'display_name' => '<firstName()> <lastName()>',
+                    'registration_date' => '<date_create()>',
+                    'plain_password' => '1234',
+                    'email' => '<email()>',
+                    'roles' => '[ROLE_USER]',
+                    'enabled' => 1,
+                ],
             ],
             Post::class => [
                 'post_{1..9}' => [
@@ -54,7 +64,8 @@ class AppFixtures extends Fixture
                     'post_detail' => '@post.post_detail_<current()>',
                     'status' => '[enabled]',
                     'tags' => '3x @tag_*',
-                    'author' => '@user_admin*'
+                    'author' => '@user_admin*',
+                    'slug' => 'test-<current()>'
                 ],
             ],
             Tag::class => [

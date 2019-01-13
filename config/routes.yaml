@@ -1,31 +1,31 @@
 user_show:
   controller: App\Controller\UserController::show
   path:
-    hr: /korisnički-profil
+    hr: /hr/korisnički-profil
     en: /profile
 
 user_edit:
   controller: App\Controller\UserController::edit
   path:
-    hr: /korisnički-profil/uređivanje/{user}
+    hr: /hr/korisnički-profil/uređivanje/{user}
     en: /profile/edit/{user}
 
 logout:
   controller: App\Controller\SecurityController::logout
   path:
-    hr: /odjava
+    hr: /hr/odjava
     en: /logout
 
 login:
   controller: App\Controller\SecurityController::login
   path:
-    hr: /prijava
+    hr: /hr/prijava
     en: /login
 
 register:
   controller: App\Controller\RegistrationController::register
   path:
-    hr: /registracija
+    hr: /hr/registracija
     en: /register
 
 post_index:
@@ -37,8 +37,8 @@ post_index:
 post_show:
   controller: App\Controller\PostController::show
   path:
-    hr: /objave/{post}
-    en: /post/{post}
+    hr: /hr/objave/{post}
+    en: /posts/{post}
 
 ajax_post_index:
   controller: App\Controller\PostController::ajaxIndex
@@ -63,47 +63,47 @@ ajax_like:
 tag_index:
   controller: App\Controller\Admin\TagController::index
   path:
-    hr: /admin/tagovi
+    hr: /hr/admin/tagovi
     en: /admin/tags
 
 tag_new:
   controller: App\Controller\Admin\TagController::new
   path:
-    hr: /admin/tagovi/novi
+    hr: /hr/admin/tagovi/novi
     en: /admin/tags/new
 
 tag_show:
   controller: App\Controller\Admin\TagController::show
   path:
-    hr: /admin/tagovi/{tag}
+    hr: /hr/admin/tagovi/{tag}
     en: /admin/tags/{tag}
 
 tag_edit:
   controller: App\Controller\Admin\TagController::edit
   path:
-    hr: /admin/tagovi/{tag}/uredivanje
+    hr: /hr/admin/tagovi/{tag}/uredivanje
     en: /admin/tags/{tag}/edit
 
 tag_delete:
   controller: App\Controller\Admin\TagController::delete
   path:
-    hr: /admin/tagovi/{tag}
+    hr: /hr/admin/tagovi/{tag}
     en: /admin/tags/{tag}
 
 post_new:
   controller: App\Controller\Admin\PostController::new
   path:
-    hr: /admin/objave/nova
+    hr: /hr/admin/objave/nova
     en: /admin/posts/new
 
 post_edit:
   controller: App\Controller\Admin\PostController::edit
   path:
-    hr: /admin/objave/{post}/uredivanje
+    hr: /hr/admin/objave/{post}/uredivanje
     en: /admin/posts/{post}/edit
 
 post_delete:
   controller: App\Controller\Admin\PostController::delete
   path:
-    hr: /admin/objave/{post}
+    hr: /hr/admin/objave/{post}
     en: /admin/posts/{post}

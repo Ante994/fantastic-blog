@@ -32,7 +32,6 @@ class PostRepository extends ServiceEntityRepository
             ->execute();
     }
 
-
     private function addIsPublishedQueryBuilder(QueryBuilder $qb = null)
     {
         return $this->getOrCreateQueryBuilder($qb)
@@ -44,5 +43,9 @@ class PostRepository extends ServiceEntityRepository
         return $qb ?: $this->createQueryBuilder('p');
     }
 
+    public function findAllOrderByDate($orderBy='DESC')
+    {
+        return $this->findBy(array(), array('dateCreated' => $orderBy));
+    }
 
 }

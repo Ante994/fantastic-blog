@@ -11,37 +11,47 @@ namespace App\Tests\Entity;
 use App\Entity\Post;
 use App\Entity\PostDetail;
 use App\Entity\Tag;
+use Cocur\Slugify\Slugify;
 use PHPUnit\Framework\TestCase;
 
 class PostTest extends TestCase
 {
-    public function testItHasNoTagByDefault()
-    {
-        $post = new Post();
+    /** @var Post $post */
+    private $post;
 
-        $this->assertEmpty($post->getTags());
+    public function setUp()
+    {
+        $this->post = new Post();
+    }
+
+    public function testNewPostHasNoTagByDefault()
+    {
+        $this->assertEmpty($this->post->getTags());
     }
 
     public function testItAddsTags()
     {
-        $post = new Post();
-        $post->addTag(new Tag());
-        $post->addTag(new Tag());
+        $this->post->addTag(new Tag());
+        $this->post->addTag(new Tag());
 
-        $this->assertCount(2, $post->getTags());
+        $this->assertCount(2, $this->post->getTags());
     }
 
-    public function testItCreatePostAndContent()
+    public function testItCreatePost()
     {
-        $post = new Post();
-        $post->setTitle('main title');
+        $this->post->setTitle('main title');
         $content = new PostDetail();
         $content->setContent('main content');
-        $post->setPostDetail($content);
+        $this->post->setPostDetail($content);
 
-        $this->assertEquals('main content', $post->getPostDetail()->getContent());
+        $this->assertEquals('main content', $this->post->getPostDetail()->getContent());
     }
 
+    public function testPostSlugIsCreatedFromTitle()
+    {
+        $this->post->setTitle('fantastic title');
+        $this->post->setSlug(Slugify::create()->slugify($this->post->getTitle()));
 
+        $this->assertEquals('fantastic-title', $this->post->getSlug());
+    }
 }
-

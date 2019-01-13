@@ -48,7 +48,7 @@ class PostController extends AbstractController
     public function index(Request $request)
     {
         $param = $request->query->get('q');
-        $posts = $this->search($param);
+        $posts = $this->filter($param);
         $pagination = $this->paginator->paginate($posts, $request);
 
         return $this->render(
@@ -107,12 +107,12 @@ class PostController extends AbstractController
      * @param String $param
      * @return Post[]
      */
-    private function filter(String $param='')
+    private function filter(String $param=null)
     {
         if ($param) {
             $objects = $this->repository->search($param);
         } else {
-            $objects = $this->repository->findAll();
+            $objects = $this->repository->findAllOrderByDate();
         }
 
         return $objects;

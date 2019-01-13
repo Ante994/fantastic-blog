@@ -14,6 +14,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,6 +61,7 @@ class UserController extends AbstractController
      *
      * @param Request $request
      * @param User $user
+     * @ParamConverter("user", options={"mapping": {"user": "id"}}))
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function edit(Request $request, User $user): Response

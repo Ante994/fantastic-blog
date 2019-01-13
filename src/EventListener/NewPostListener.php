@@ -54,8 +54,12 @@ class NewPostListener
             $entity->setAuthor($user);
         }
 
+        // If we use data fixtures then slug is set random
+        if (!$entity->getSlug()) {
+            $slug = $this->slugger->slugify($entity->getTitle());
+            $entity->setSlug($slug.'-'.rand(100, 999));
+        }
+
         $entity->setStatus(['enabled']);
-        $slug = $this->slugger->slugify($entity->getTitle());
-        $entity->setSlug($slug.'-'.rand(100, 999));
     }
 }
