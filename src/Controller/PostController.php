@@ -43,7 +43,7 @@ class PostController extends AbstractController
      * Displaying posts title
      *
      * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface|Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -83,7 +83,7 @@ class PostController extends AbstractController
      * Ajax call for paginate posts
      *
      * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface|Response
+     * @return Response
      */
     public function ajaxIndex(Request $request)
     {
