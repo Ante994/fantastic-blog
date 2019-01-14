@@ -87,8 +87,8 @@ tag_edit:
 tag_delete:
   controller: App\Controller\Admin\TagController::delete
   path:
-    hr: /hr/admin/tagovi/{tag}
-    en: /admin/tags/{tag}
+    hr: /hr/admin/tagovi/{tag}/obriši
+    en: /admin/tags/{tag}/delete
 
 post_new:
   controller: App\Controller\Admin\PostController::new

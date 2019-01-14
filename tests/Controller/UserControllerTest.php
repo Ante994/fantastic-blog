@@ -44,7 +44,7 @@ class UserControllerTest extends WebTestCase
     {
         $client = $this->loginUser();
         $client->followRedirects();
-        $client->request('GET', "/profile/edit/1");
+        $client->request('GET', "/profile/edit/2");
 
         $client->submitForm('Submit', [
             'user[firstname]' => 'Antisa',
@@ -71,9 +71,9 @@ class UserControllerTest extends WebTestCase
     public function testLoggedUserCannotAccessAnotherUserEditPage()
     {
         $client = $this->loginUser();
-        $client->request('GET', "/profile/edit/2");
+        $client->request('GET', "/profile/edit/4");
 
-        $this->assertTrue($client->getResponse()->isRedirect('http://localhost/login'));
+        $this->assertStatusCode(404, $client);
     }
 
 }

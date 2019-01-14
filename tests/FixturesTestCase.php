@@ -8,6 +8,7 @@
 
 namespace App\Tests;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -16,20 +17,18 @@ use Liip\FunctionalTestBundle\Test\WebTestCase;
 abstract class FixturesTestCase extends WebTestCase
 {
     protected $client;
-    protected $em;
-
     protected function setUp()
     {
         $this->client = static::createClient();
-
-        $this->em = static::$kernel->getContainer()
+        $em = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
 
         if (!isset($metadatas)) {
-            $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
+            $metadatas = $em->getMetadataFactory()->getAllMetadata();
         }
-        $schemaTool = new SchemaTool($this->em);
+        /** @var EntityManager $em */
+        $schemaTool = new SchemaTool($em);
         $schemaTool->dropDatabase();
         if (!empty($metadatas)) {
             try {

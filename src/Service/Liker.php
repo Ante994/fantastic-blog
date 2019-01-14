@@ -23,7 +23,7 @@ class Liker
 
     /**
      * Liker service constructor
-     * 
+     *
      * @param LikeCounterRepository $likeCounterRepository
      * @param Security $security
      * @param EntityManagerInterface $entityManager
@@ -36,7 +36,7 @@ class Liker
     }
 
     /**
-     * Function for liking post
+     * Function for liking post for given post
      *
      * @param Post $post
      */

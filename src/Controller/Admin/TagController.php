@@ -86,17 +86,14 @@ class TagController extends AbstractController
     /**
      * Delete one tag
      *
-     * @param Request $request
      * @param Tag $tag
      * @return Response
      */
-    public function delete(Request $request, Tag $tag): Response
+    public function delete(Tag $tag): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$tag->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($tag);
-            $entityManager->flush();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($tag);
+        $entityManager->flush();
 
         return $this->redirectToRoute('tag_index');
     }

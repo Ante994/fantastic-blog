@@ -8,43 +8,51 @@
 
 namespace App\Tests\Controller;
 
-
+use App\Tests\FixturesTestCase;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Symfony\Component\HttpKernel\Client;
 
-class AdminControllerTest extends WebTestCase
+class AdminControllerTest extends FixturesTestCase
 {
+    /** @var Client $client */
+    protected $client;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->client = $this->loginAdmin();
+    }
+
     /**
      * @dataProvider provideUrlsForAdmin
      * @param $url
      */
     public function testPageIsSuccessfulForAdmin($url)
     {
-        $client = $this->loginAdmin();
-        $client->request('GET', $url);
 
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $this->client->request('GET', $url);
+
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
     }
 
     public function testAdminCanClickOnNewPostCreate()
     {
-        $client = $this->loginAdmin();
-        $crawler = $client->request('GET', "/");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
         $link = $crawler
             ->filter('a:contains("New post")')
             ->eq(0)
             ->link();
 
-        $page = $client->click($link);
+        $page = $this->client->click($link);
         $this->assertEquals('Create new post', $page->filter('h3')->first()->text());
     }
 
     public function testAdminCanCreateNewPost()
     {
-        $client = $this->loginAdmin();
-        $crawler = $client->request('GET', "/admin/posts/new");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/admin/posts/new");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton('Submit')->form();
 
@@ -52,54 +60,50 @@ class AdminControllerTest extends WebTestCase
         $form['post[postDetail][content]'] = 'This is example content for testing!';
         $form['post[tags][1]'] = true;
 
-        $client->submit($form);
-        $this->assertEquals(302,  $client->getResponse()->getStatusCode());
-        $crawler = $client->request('GET', "/");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $this->client->submit($form);
+        $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->assertContains('This is title', $crawler->filter('h2')->first()->text());
     }
 
     public function testAdminCanClickOnNewTagCreate()
     {
-        $client = $this->loginAdmin();
-        $crawler = $client->request('GET', "/");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
         $link = $crawler
             ->filter('a:contains("New tag")')
             ->eq(0)
             ->link();
 
-        $page = $client->click($link);
-        $this->assertEquals('Create new tag', $page->filter('h3')->first()->text());
+        $page = $this->client->click($link);
+        $this->assertEquals('Create new Tag', $page->filter('h3')->first()->text());
     }
 
     public function testAdminCanCreateNewTag()
     {
-        $client = $this->loginAdmin();
-        $crawler = $client->request('GET', "/admin/tags/new");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/admin/tags/new");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
-        $form = $crawler->selectButton('Submit')->form();
+        $form = $crawler->selectButton('Save')->form();
 
         $form['tag[name]'] = 'Tag X';
-        $client->submit($form);
-        $this->assertEquals(302,  $client->getResponse()->getStatusCode());
-        $crawler = $client->request('GET', "/admin/tags");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
-        $this->assertContains('Tag X', $crawler->filter('h2')->first()->text());
+        $this->client->submit($form);
+        $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/admin/tags");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
+        $this->assertContains('Tag X', $crawler->filter('tr')->last()->text());
     }
 
-    public function testAdminUserCanEditPost()
+    public function testAdminCanEditPost()
     {
-        $client = $this->loginAdmin();
-
         $container = self::$kernel->getContainer();
         $em = $container->get('doctrine')->getManager();
         $postRepo = $em->getRepository('App:Post');
         $post = $postRepo->find(1);
-        $crawler = $client->request('GET', "/admin/posts/".$post->getSlug."/edit");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/admin/posts/".$post->getSlug()."/edit");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton('Submit')->form();
 
@@ -107,56 +111,50 @@ class AdminControllerTest extends WebTestCase
         $form['post[tags][1]'] = true;
         $form['post[tags][2]'] = true;
 
-        $client->submit($form);
-        $this->assertEquals(302,  $client->getResponse()->getStatusCode());
-        $crawler = $client->request('GET', "/");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $this->client->submit($form);
+        $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->assertContains('This is edited title', $crawler->filter('h2')->first()->text());
     }
 
-    public function testAdminUserCanDeletePost()
+    public function testAdminCanDeletePost()
     {
-        $client = $this->loginAdmin();
-
         $container = self::$kernel->getContainer();
         $em = $container->get('doctrine')->getManager();
         $postRepo = $em->getRepository('App:Post');
         $post = $postRepo->findOneBy(['author' => 1]);
-        $client->request('GET', "/posts/".$post->getSlug());
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
-        $client->request('DELETE', "/admin/posts/".$post->getSlug());
-        $this->assertEquals(302,  $client->getResponse()->getStatusCode());
+        $this->client->request('GET', "/posts/".$post->getSlug());
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
+        $this->client->request('DELETE', "/admin/posts/".$post->getSlug());
+        $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
     }
 
 
 
-    public function testAdminUserCanDeleteTag()
+    public function testAdminCanDeleteTag()
     {
-        $client = $this->loginAdmin();
-
         $container = self::$kernel->getContainer();
         $em = $container->get('doctrine')->getManager();
         $tagRepo = $em->getRepository('App:Tag');
         $tag = $tagRepo->find(1);
-        $client->request('DELETE', "/admin/tags/".$tag->getId());
-        $this->assertEquals(302,  $client->getResponse()->getStatusCode());
+
+        $this->client->request('DELETE', "/admin/tags/".$tag->getId());
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
     }
 
-
-    public function testAdminUserCanEditTag()
+    public function testAdminCanEditTag()
     {
-        $client = $this->loginAdmin();
-        $crawler = $client->request('GET', "/admin/tags/1");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/admin/tags/1/edit");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
-        $form = $crawler->selectButton('Submit')->form();
+        $form = $crawler->selectButton('Update')->form();
 
-        $form['tag[name]'] = 'Tag First';
-        $client->submit($form);
-        $this->assertEquals(302,  $client->getResponse()->getStatusCode());
-        $crawler = $client->request('GET', "/admin/tags");
-        $this->assertEquals(200,  $client->getResponse()->getStatusCode());
-        $this->assertContains('Tag First', $crawler->filter('h2')->first()->text());
+        $form['tag[name]'] = 'Tag Edit';
+        $this->client->submit($form);
+        $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->request('GET', "/admin/tags");
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
     }
 
 
@@ -165,10 +163,12 @@ class AdminControllerTest extends WebTestCase
         return array(
             array('/admin/tags/new'),
             array('/admin/posts/new'),
+            array('/admin/tags/1'),
         );
     }
 
-    public function loginAdmin()
+
+    private function loginAdmin()
     {
         return static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin@fb.com',
