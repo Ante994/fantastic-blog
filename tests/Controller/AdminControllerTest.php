@@ -35,6 +35,23 @@ class AdminControllerTest extends FixturesTestCase
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
     }
 
+    public function testRegisterAdminSuccessfully()
+    {
+        $client = self::createClient();
+
+        $client->request('GET', '/register');
+        $client->submitForm('Submit', [
+            'user[firstname]' => 'fantastic',
+            'user[lastname]' => 'tester',
+            'user[email]' => 'admin2@fb.com',
+            'user[plainPassword][first]' => '1234',
+            'user[plainPassword][second]' => '1234',
+        ]);
+
+        $this->assertStatusCode(302, $client);
+    }
+
+
     public function testAdminCanClickOnNewPostCreate()
     {
         $crawler = $this->client->request('GET', "/");
@@ -153,7 +170,7 @@ class AdminControllerTest extends FixturesTestCase
         $form['tag[name]'] = 'Tag Edit';
         $this->client->submit($form);
         $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
-        $crawler = $this->client->request('GET', "/admin/tags");
+        $this->client->request('GET', "/admin/tags");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
     }
 

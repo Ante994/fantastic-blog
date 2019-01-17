@@ -57,23 +57,6 @@ class SecurityControllerTest extends WebTestCase
         );
     }
 
-    public function testRegisterAdminSuccessfully()
-    {
-        $client = self::createClient();
-
-        $client->request('GET', '/register');
-        $client->submitForm('Submit', [
-            'user[firstname]' => 'fantastic',
-            'user[lastname]' => 'tester',
-            'user[email]' => 'admin2@fb.com',
-            'user[plainPassword][first]' => '1234',
-            'user[plainPassword][second]' => '1234',
-        ]);
-
-        $this->assertStatusCode(302, $client);
-    }
-
-
     public function testUserAdminCanLoginWithCorrectData()
     {
         $client = self::createClient();
