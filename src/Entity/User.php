@@ -94,6 +94,21 @@ class User implements UserInterface, \Serializable
      */
     private $lastLogin;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Favorite", mappedBy="user", orphanRemoval=true)
+     */
+    private $favorite;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\LikeCounter", mappedBy="owner", orphanRemoval=true)
+     */
+    private $likes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author", orphanRemoval=true)
+     */
+    private $comments;
+
     public function getId(): ?int
     {
         return $this->id;

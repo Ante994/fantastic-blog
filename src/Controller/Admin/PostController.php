@@ -8,10 +8,14 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Favorite;
+use App\Entity\LikeCounter;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\PostRepository;
+use App\Service\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,16 +27,33 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PostController extends AbstractController
 {
+    private $paginator;
     private $repository;
 
     /**
-     * PostController constructor
-     *
+     * PostController constructor.
+     * @param Paginator $paginator
      * @param PostRepository $postRepository
      */
-    public function __construct(PostRepository $postRepository)
+    public function __construct(Paginator $paginator, PostRepository $postRepository)
     {
-        $this->repository  = $postRepository;
+        $this->paginator = $paginator;
+        $this->repository = $postRepository;
+    }
+    /**
+     * Displaying posts title for Admin with operation for CRUD
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $pagination = $this->paginator->paginate($this->repository->findAll(), $request);
+
+        return $this->render(
+            'admin/post/index.html.twig',
+            array('pagination' => $pagination)
+        );
     }
 
     /**
@@ -52,12 +73,34 @@ class PostController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
-            return $this->redirectToRoute('post_index');
+            return $this->redirectToRoute('admin_post_index');
         }
 
-        return $this->render('post/new.html.twig', array(
+        return $this->render('admin/post/new.html.twig', array(
             'form' => $form->createView()
         ));
+    }
+
+    /**
+     * Show one post with all details
+     *
+     * @param Post $post
+     * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
+     * @return Response
+     */
+    public function show(Post $post)
+    {
+        $post = $this->repository->find($post);
+        $totalLikes = $this->getDoctrine()->getRepository(LikeCounter::class)->findTotalLikesForPost($post);
+        $favorite = $this->getDoctrine()->getRepository(Favorite::class)->findBy(['post' => $post, 'user' => $this->getUser()]);
+
+        return $this->render('admin/post/show.html.twig', array(
+                'post' => $post,
+                'totalLikes' => $totalLikes[1],
+                'favorite' => $favorite,
+                'form' => $this->createForm(CommentType::class)->createView(),
+            )
+        );
     }
 
     /**
@@ -78,8 +121,9 @@ class PostController extends AbstractController
         $em->remove($post);
         $em->flush();
 
-        return $this->redirectToRoute('post_index');
+        return $this->redirectToRoute('admin_post_index');
     }
+
     /**
      * Editing post
      *
@@ -99,12 +143,12 @@ class PostController extends AbstractController
             $em->persist($post);
             $em->flush();
 
-            return $this->redirectToRoute('post_index');
+            return $this->redirectToRoute('admin_post_index');
         }
 
-        return $this->render('post/new.html.twig',[
+        return $this->render('admin/post/edit.html.twig',array(
                 'form'=> $form->createView(),
-            ]
+            )
         );
     }
 }

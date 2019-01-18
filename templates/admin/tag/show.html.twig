@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tag{% endblock %}
+
+{% block body %}
+    <a href="{{ path('admin_tag_index') }}">{% trans %}Back{% endtrans %}</a>
+    <hr>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>ID</th>
+                <td>{{ tag.id }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Tag{% endtrans %}</th>
+                <td>{{ tag.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>{% trans %}Posts{% endtrans %}</h5>
+    <ul>
+        {% for post in tag.post %}
+            <li>
+                <a href="{{ path('admin_post_show', {'post': post.slug})}}">{{ post.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -102,6 +102,50 @@
                 <source>Name</source>
                 <target>Naziv kategorije</target>
             </trans-unit>
+            <trans-unit id="posts">
+                <source>Posts</source>
+                <target>Objave</target>
+            </trans-unit>
+            <trans-unit id="tags">
+                <source>Tags</source>
+                <target>Kategorije</target>
+            </trans-unit>
+            <trans-unit id="users">
+                <source>Users</source>
+                <target>Korisnici</target>
+            </trans-unit>
+            <trans-unit id="user_full_name">
+                <source>Full name</source>
+                <target>Ime i prezime</target>
+            </trans-unit>
+            <trans-unit id="registration_date">
+                <source>Registration date</source>
+                <target>Datum registracije</target>
+            </trans-unit>
+            <trans-unit id="roles">
+                <source>Roles</source>
+                <target>Role</target>
+            </trans-unit>
+            <trans-unit id="last_login">
+                <source>Last login</source>
+                <target>Zadnja prijava</target>
+            </trans-unit>
+            <trans-unit id="back">
+                <source>Back</source>
+                <target>Povratak</target>
+            </trans-unit>
+            <trans-unit id="edit_tag">
+                <source>Edit tag</source>
+                <target>Uređivanje kategorije</target>
+            </trans-unit>
+            <trans-unit id="tag">
+                <source>Tag</source>
+                <target>Kategorija</target>
+            </trans-unit>
+            <trans-unit id="post">
+                <source>Post</source>
+                <target>Objava</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

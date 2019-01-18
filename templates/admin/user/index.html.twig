@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block base %}
+    <a href="{{ path('admin_index') }}">{% trans %}Back{% endtrans %}</a>
+    <hr>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>{% trans %}Full name{% endtrans %}</th>
+            <th>Email</th>
+            <th>{% trans %}Roles{% endtrans %}</th>
+            <th>{% trans %}Registration date{% endtrans %}</th>
+            <th>{% trans %}Last login{% endtrans %}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <th>{{ user.id }}</th>
+                <td>{{ user.firstname }} {{ user.lastname }} </td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% for role in user.roles %}
+                        {{ role }}
+                    {% endfor %}
+                </td>
+                <td>{{ user.registrationDate|date('F j, Y, g:i a')}}</td>
+                <td>{{ user.lastLogin|date('F j, Y, g:i a')}}</td>
+                <td>
+                    <div class="col-md-2">
+                        <span>
+                            <a href="{{ path('admin_user_show',{'user':user.id} )}}" class="fas fa-hand-point-up"></a>
+                            <a href="{{ path('admin_user_edit',{'user':user.id} )}}" class="fas fa-edit"></a>
+                            <a href="{{ path('admin_user_delete',{'user':user.id} )}}" class="fas fa-trash"></a>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

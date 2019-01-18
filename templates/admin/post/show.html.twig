@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('admin_post_index') }}">{% trans %}Back{% endtrans %}</a>
+    <hr>
+    <h2 style="text-align: center">{{ post.title }} </h2>
+    <ul class="list-group">
+        <li class="list-group-item">
+            {{ post.author.displayName|capitalize }}
+            {{ post.dateCreated|date('d.m.Y') }}
+            <span class="post-tags">
+                    {% for tag in post.tags %}
+                        <i>{{ tag.name }}</i>
+                    {% endfor %}
+                </span>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-md-10">
+                    <span class="post-likes">
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ path('ajax_like', { post: post.slug}) }}" class="fas fa-sign-language js-like-article"> {% trans %} Clap It! {% endtrans %}</a>
+                        {% endif %}
+                        <i class="fas fa-heart"> <span class="js-like-article-count"> ({{ totalLikes ? totalLikes : 0 }}) </span></i>
+                    </span>
+                    <span>
+                        <a class="fas fa-comments"> ({{ post.comments|length }}) </a>
+                    </span>
+                    <span class="post-favorite">
+                        {% if is_granted('ROLE_USER') %}
+                            {% if favorite %}
+                                <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">{% trans %}Remove from favorite{% endtrans %}</a>
+                            {% else %}
+                                <a href="{{ path('ajax_favorite', { post: post.slug}) }}" class="fas fa-star favorite js-post-favorite">{% trans %}Add to favorite{% endtrans %}</a>
+                            {% endif %}
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="col-md-2">
+                    <a href="{{ path('admin_post_delete', { post: post.slug }) }}" class="fas fa-trash"></a>
+                    |  <a href="{{ path('admin_post_edit', { post: post.slug }) }}" class="fas fa-edit"></a>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <br>
+    <p>{{ post.postDetail.content|raw }}</p>
+    <hr>
+    <div id="post-comments">
+        {% include 'comment/_form.html.twig' %}
+        <div class="post-comments-body">
+            <hr>
+            {% for comment in post.comments|reverse %}
+                {{ include('comment/comment_body.html.twig') }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function () {
+            $(".fa-comments").click(function() {
+                $('html,body').animate({
+                        scrollTop: $("#post-comments").offset().top},
+                    'slow');
+            });
+
+            $(function() {
+                $('#post-comments').on('click', ".comment-submit", function (e) {
+                    e.preventDefault();
+                    let data = {
+                        content: $('#comment_content').val(),
+                        post: {{ post.id }}
+                    };
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        data: data,
+                        url: '{{ path('ajax_comment') }}',
+                    }).done(function (data) {
+                        $('.post-comments-body').prepend('<li class="list-group-item">'
+                            + data['comment'] + '<span class="comment-author">' + data['author'] + ' ' + data['created'] +
+                            '</span></li>');
+                        $('#comment_content').val('');
+                    });
+
+                });
+
+                $('.post-likes').on('click', ".js-like-article", function (e) {
+                    e.preventDefault();
+                    let data = {
+                        post: {{ post.id }}
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        data: data,
+                        url: '{{ path('ajax_like') }}',
+                    }).done(function (data) {
+                        console.log(data)
+                        $('.js-like-article-count').html('('+data.likes+')');
+                    });
+                });
+
+                $('.post-favorite').on('click', ".js-post-favorite", function (e) {
+                    e.preventDefault();
+                    let data = {
+                        post: {{ post.id }}
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        data: data,
+                        url: '{{ path('ajax_favorite') }}',
+                    }).done(function (data) {
+                        if (data.favorite === true) {
+                            $('.post-favorite').append('<a href="{{ path('ajax_favorite', { slug: post.slug}) }}" class="fas fa-star unfavorite js-post-favorite">{% trans %}Remove from favorite{% endtrans %}</a>');
+                            $('.fas.fa-star.favorite').hide();
+                        } else {
+                            $('.post-favorite').append('<a href="{{ path('ajax_favorite', { slug: post.slug}) }}" class="fas fa-star favorite js-post-favorite">{% trans %}Add to favorite{% endtrans %}</a>');
+                            $('.fas.fa-star.unfavorite').hide();
+                        }
+                    });
+                });
+
+                $('.comment-author').on('click', ".comment-delete", function (e) {
+                    e.preventDefault();
+                    commentId = $(this).data("value")
+                    let data = {
+                        comment: commentId
+                    };
+
+                    console.log($(this).data("value"))
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        data: data,
+                        url: '{{ path('ajax_comment_delete') }}',
+                    }).done(function (data) {
+                        $("#comment-"+commentId).remove();
+
+                    });
+                });
+            });
+        });
+
+    </script>
+
+{% endblock %}

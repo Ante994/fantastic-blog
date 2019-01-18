@@ -101,6 +101,46 @@
         <source>Name</source>
         <target>Name</target>
       </trans-unit>
+      <trans-unit id="posts">
+        <source>Posts</source>
+        <target>Posts</target>
+      </trans-unit>
+      <trans-unit id="tags">
+        <source>Tags</source>
+        <target>Tags</target>
+      </trans-unit>
+      <trans-unit id="users">
+        <source>Users</source>
+        <target>Users</target>
+      </trans-unit>
+      <trans-unit id="user_full_name">
+        <source>Full name</source>
+        <target>Full name</target>
+      </trans-unit>
+      <trans-unit id="registration_date">
+        <source>Registration date</source>
+        <target>Registration date</target>
+      </trans-unit>
+      <trans-unit id="roles">
+        <source>Roles</source>
+        <target>Roles</target>
+      </trans-unit>
+      <trans-unit id="back">
+        <source>Back</source>
+        <target>Back</target>
+      </trans-unit>
+      <trans-unit id="edit_tag">
+        <source>Edit tag</source>
+        <target>Edit tag</target>
+      </trans-unit>
+      <trans-unit id="tag">
+        <source>Tag</source>
+        <target>Tag</target>
+      </trans-unit>
+      <trans-unit id="post">
+        <source>Post</source>
+        <target>Post</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

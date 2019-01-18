@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% trans %} New post {% endtrans %}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('admin_post_index') }}">{% trans %}Back{% endtrans %}</a>
+    <hr>
+    <h3 style="text-align: center">{% trans %}New post{% endtrans %}</h3>
+
+    {{ include('admin/post/_form.html.twig') }}
+
+{% endblock %}

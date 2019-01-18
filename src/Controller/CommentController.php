@@ -31,6 +31,7 @@ class CommentController extends AbstractController
      * Initialized comment repository, commenter service
      * for making and deleting comments
      * @param CommentRepository $commentRepository
+     * @param Commenter $commenter
      */
     public function __construct(CommentRepository $commentRepository, Commenter $commenter)
     {

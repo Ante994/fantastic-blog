@@ -11,6 +11,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TagController extends AbstractController
 {
+    private $repository;
+
+    /**
+     * Tag constructor.
+     * @param TagRepository $repository
+     */
+    public function __construct(TagRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * List of all tags
      *
@@ -19,7 +30,10 @@ class TagController extends AbstractController
      */
     public function index(TagRepository $tagRepository): Response
     {
-        return $this->render('tag/index.html.twig', ['tags' => $tagRepository->findAll()]);
+        return $this->render('admin/tag/index.html.twig', array(
+            'tags' => $tagRepository->findAll()
+            )
+        );
     }
 
     /**
@@ -39,13 +53,14 @@ class TagController extends AbstractController
             $entityManager->persist($tag);
             $entityManager->flush();
 
-            return $this->redirectToRoute('tag_index');
+            return $this->redirectToRoute('admin_tag_new');
         }
 
-        return $this->render('tag/new.html.twig', [
+        return $this->render('admin/tag/new.html.twig', array(
             'tag' => $tag,
             'form' => $form->createView(),
-        ]);
+            )
+        );
     }
 
     /**
@@ -56,7 +71,10 @@ class TagController extends AbstractController
      */
     public function show(Tag $tag): Response
     {
-        return $this->render('tag/show.html.twig', ['tag' => $tag]);
+        return $this->render('admin/tag/show.html.twig', array(
+            'tag' => $tag,
+            )
+        );
     }
 
     /**
@@ -74,13 +92,17 @@ class TagController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('tag_index', ['id' => $tag->getId()]);
+            return $this->redirectToRoute('admin_tag_index', array(
+                'id' => $tag->getId()
+                )
+            );
         }
 
-        return $this->render('tag/edit.html.twig', [
+        return $this->render('admin/tag/edit.html.twig', array(
             'tag' => $tag,
             'form' => $form->createView(),
-        ]);
+            )
+        );
     }
 
     /**
@@ -95,6 +117,6 @@ class TagController extends AbstractController
         $entityManager->remove($tag);
         $entityManager->flush();
 
-        return $this->redirectToRoute('tag_index');
+        return $this->redirectToRoute('admin_tag_index');
     }
 }

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('admin_index') }}">{% trans %}Back{% endtrans %}</a>
+    <hr>
+
+    {% include('admin/post/index_paginate.html.twig') %}
+    <hr>
+    <a href="{{ path('admin_post_new') }}">{% trans %}New post{% endtrans %}</a>
+{% endblock %}

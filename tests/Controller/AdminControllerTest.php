@@ -9,7 +9,6 @@
 namespace App\Tests\Controller;
 
 use App\Tests\FixturesTestCase;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\Client;
 
 class AdminControllerTest extends FixturesTestCase
@@ -54,7 +53,7 @@ class AdminControllerTest extends FixturesTestCase
 
     public function testAdminCanClickOnNewPostCreate()
     {
-        $crawler = $this->client->request('GET', "/");
+        $crawler = $this->client->request('GET', "/admin/posts");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
         $link = $crawler
@@ -63,7 +62,7 @@ class AdminControllerTest extends FixturesTestCase
             ->link();
 
         $page = $this->client->click($link);
-        $this->assertEquals('Create new post', $page->filter('h3')->first()->text());
+        $this->assertEquals('New post', $page->filter('h3')->first()->text());
     }
 
     public function testAdminCanCreateNewPost()
@@ -86,7 +85,7 @@ class AdminControllerTest extends FixturesTestCase
 
     public function testAdminCanClickOnNewTagCreate()
     {
-        $crawler = $this->client->request('GET', "/");
+        $crawler = $this->client->request('GET', "/admin/tags");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
         $link = $crawler
@@ -95,7 +94,7 @@ class AdminControllerTest extends FixturesTestCase
             ->link();
 
         $page = $this->client->click($link);
-        $this->assertEquals('Create new Tag', $page->filter('h3')->first()->text());
+        $this->assertEquals('New tag', $page->filter('h3')->first()->text());
     }
 
     public function testAdminCanCreateNewTag()
@@ -103,7 +102,7 @@ class AdminControllerTest extends FixturesTestCase
         $crawler = $this->client->request('GET', "/admin/tags/new");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
-        $form = $crawler->selectButton('Save')->form();
+        $form = $crawler->selectButton('Submit')->form();
 
         $form['tag[name]'] = 'Tag X';
         $this->client->submit($form);
@@ -141,10 +140,11 @@ class AdminControllerTest extends FixturesTestCase
         $em = $container->get('doctrine')->getManager();
         $postRepo = $em->getRepository('App:Post');
         $post = $postRepo->findOneBy(['author' => 1]);
-        $this->client->request('GET', "/posts/".$post->getSlug());
-        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
-        $this->client->request('DELETE', "/admin/posts/".$post->getSlug());
+        $slug = $post->getSlug();
+        $this->client->request('GET', "admin/posts/".$post->getSlug());
         $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
+        $this->client->request('DELETE', "/admin/posts/".$slug);
+        $this->assertEquals(404,  $this->client->getResponse()->getStatusCode());
     }
 
 
@@ -165,7 +165,7 @@ class AdminControllerTest extends FixturesTestCase
         $crawler = $this->client->request('GET', "/admin/tags/1/edit");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
-        $form = $crawler->selectButton('Update')->form();
+        $form = $crawler->selectButton('Submit')->form();
 
         $form['tag[name]'] = 'Tag Edit';
         $this->client->submit($form);
