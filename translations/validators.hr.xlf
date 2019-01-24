@@ -5,7 +5,7 @@
             <tool tool-id="symfony" tool-name="Symfony"/>
         </header>
         <body>
-            <trans-unit id="validator1">
+            <trans-unit id="blank.name.validator">
                 <source>This value should not be blank</source>
                 <target>Potrebno je unijeti naslov</target>
             </trans-unit>

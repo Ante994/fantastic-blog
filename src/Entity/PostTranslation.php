@@ -53,12 +53,14 @@ class PostTranslation
     private $title_hr;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="text", nullable=false)
      */
     private $content_en;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank
+     * @ORM\Column(type="text", nullable=false)
      */
     private $content_hr;
 

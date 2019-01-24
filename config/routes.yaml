@@ -98,6 +98,30 @@ admin_post_index:
     hr: /hr/admin/objave
     en: /admin/posts
 
+admin_post_new:
+  controller: App\Controller\Admin\PostController::new
+  path:
+    hr: /hr/admin/objave/nova
+    en: /admin/posts/new
+
+admin_post_show:
+  controller: App\Controller\Admin\PostController::show
+  path:
+    hr: /hr/admin/objave/{post}
+    en: /admin/posts/{post}
+
+admin_post_edit:
+  controller: App\Controller\Admin\PostController::edit
+  path:
+    hr: /hr/admin/objave/{post}/uređivanje
+    en: /admin/posts/{post}/edit
+
+admin_post_delete:
+  controller: App\Controller\Admin\PostController::delete
+  path:
+    hr: /hr/admin/objave/{post}/obriši
+    en: /admin/posts/{post}/delete
+
 admin_tag_index:
   controller: App\Controller\Admin\TagController::index
   path:
@@ -127,27 +151,3 @@ admin_tag_delete:
   path:
     hr: /hr/admin/tagovi/{tag}/obriši
     en: /admin/tags/{tag}/delete
-
-admin_post_new:
-  controller: App\Controller\Admin\PostController::new
-  path:
-    hr: /hr/admin/objave/nova
-    en: /admin/posts/new
-
-admin_post_show:
-  controller: App\Controller\Admin\PostController::show
-  path:
-    hr: /admin/hr/objave/{post}
-    en: /admin//posts/{post}
-
-admin_post_edit:
-  controller: App\Controller\Admin\PostController::edit
-  path:
-    hr: /hr/admin/objave/{post}/uređivanje
-    en: /admin/posts/{post}/edit
-
-admin_post_delete:
-  controller: App\Controller\Admin\PostController::delete
-  path:
-    hr: /hr/admin/objave/{post}
-    en: /admin/posts/{post}

@@ -76,8 +76,8 @@ class AppFixtures extends Fixture
             PostTranslation::class => [
                 'post.post_translation_{1..9}' => [
                     'post' => '@post_<current()>',
-                    'title_en' => '<sentence()>',
-                    'title_hr' => '<sentence()>',
+                    'title_en' => 'test-<current()>',
+                    'title_hr' => 'test-hr-<current()>',
                     'content_hr' => '<paragraph()>',
                     'content_en' => '<paragraph()>',
                     'slug_en' => 'test-<current()>',

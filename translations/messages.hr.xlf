@@ -178,10 +178,6 @@
                 <source>User activities</source>
                 <target>Aktivnosti</target>
             </trans-unit>
-            <trans-unit id="post_title_validation">
-                <source>Post with this title already exist</source>
-                <target>Objava sa ovim naslovm već postoji</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

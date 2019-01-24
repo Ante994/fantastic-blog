@@ -74,6 +74,8 @@ class AdminControllerTest extends FixturesTestCase
 
         $form['post[postTranslation][titleEn]'] = 'This is title';
         $form['post[postTranslation][contentEn]'] = 'This is example content for testing!';
+        $form['post[postTranslation][titleHr]'] = 'Ovo je naslov';
+        $form['post[postTranslation][contentHr]'] = 'Ovo je primjer sadrzaja za testiranje!';
         $form['post[tags][1]'] = true;
 
         $this->client->submit($form);
@@ -107,7 +109,7 @@ class AdminControllerTest extends FixturesTestCase
         $form['tag[nameEn]'] = 'Tag X';
         $form['tag[nameHr]'] = 'Tag X-Hr';
         $this->client->submit($form);
-        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
         $crawler = $this->client->request('GET', "/admin/tags");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->assertContains('Tag X', $crawler->filter('tr')->last()->text());
@@ -142,9 +144,10 @@ class AdminControllerTest extends FixturesTestCase
         $postRepo = $em->getRepository('App:Post');
         $post = $postRepo->find(1);
 
-        $this->client->request('GET', "admin/posts/".$post->getId());
+        $this->client->request('GET', "/admin/posts/".$post->getId());
+        $this->client->request('DELETE', "/admin/posts/".$post->getId().'/delete');
         $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
-        $this->client->request('DELETE', "/admin/posts/".$post->getId());
+        $this->client->request('GET', "/admin/posts/".$post->getId());
         $this->assertEquals(404,  $this->client->getResponse()->getStatusCode());
     }
 
