@@ -7,6 +7,7 @@ use App\Entity\Favorite;
 use App\Entity\LikeCounter;
 use App\Entity\Post;
 use App\Entity\PostDetail;
+use App\Entity\PostTranslation;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -60,23 +61,27 @@ class AppFixtures extends Fixture
             ],
             Post::class => [
                 'post_{1..9}' => [
-                    'title' => '<sentence()>',
-                    'post_detail' => '@post.post_detail_<current()>',
+                    'post_translation' => '@post.post_translation_<current()>',
                     'status' => '[enabled]',
                     'tags' => '3x @tag_*',
                     'author' => '@user_admin*',
-                    'slug' => 'test-<current()>'
                 ],
             ],
             Tag::class => [
                 'tag_{1..5}' => [
-                    'name' => 'Tag-<current()>',
+                    'name_en' => 'Tag-<current()>',
+                    'name_hr' => 'Tag-hr-<current()>',
                 ],
             ],
-            PostDetail::class => [
-                'post.post_detail_{1..9}' => [
-                    'content' => '<paragraph()>',
-                    'post' => '@post_<current()>'
+            PostTranslation::class => [
+                'post.post_translation_{1..9}' => [
+                    'post' => '@post_<current()>',
+                    'title_en' => '<sentence()>',
+                    'title_hr' => '<sentence()>',
+                    'content_hr' => '<paragraph()>',
+                    'content_en' => '<paragraph()>',
+                    'slug_en' => 'test-<current()>',
+                    'slug_hr' => 'test-hr-<current()>'
                 ],
             ],
 

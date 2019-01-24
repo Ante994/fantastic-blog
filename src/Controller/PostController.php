@@ -11,10 +11,11 @@ namespace App\Controller;
 use App\Entity\Favorite;
 use App\Entity\LikeCounter;
 use App\Entity\Post;
+use App\Entity\PostTranslation;
 use App\Form\CommentType;
 use App\Repository\PostRepository;
 use App\Service\Paginator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,6 +52,10 @@ class PostController extends AbstractController
         $posts = $this->filter($param);
         $pagination = $this->paginator->paginate($posts, $request);
 
+        if ($request->isXmlHttpRequest()) {
+            return $this->ajaxIndex($pagination);
+        }
+
         return $this->render(
             'post/index.html.twig',
             array('pagination' => $pagination)
@@ -60,13 +65,17 @@ class PostController extends AbstractController
     /**
      * Show one post with all details
      *
-     * @param Post $post
-     * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
+     * @param Request $request
      * @return Response
      */
-    public function show(Post $post)
+    public function show(Request $request)
     {
-        $post = $this->repository->find($post);
+        $locale = $request->getLocale();
+        $slug = $request->get('post');
+
+        /** @var PostTranslation $postTranslation */
+        $postTranslation = $this->getDoctrine()->getRepository(PostTranslation::class)->findBySlug($slug, $locale);
+        $post = $postTranslation->getPost();
         $totalLikes = $this->getDoctrine()->getRepository(LikeCounter::class)->findTotalLikesForPost($post);
         $favorite = $this->getDoctrine()->getRepository(Favorite::class)->findBy(['post' => $post, 'user' => $this->getUser()]);
 
@@ -80,25 +89,17 @@ class PostController extends AbstractController
     }
 
     /**
-     * Ajax call for paginate posts
+     * Ajax method for paginate posts
      *
-     * @param Request $request
+     * @param PaginationInterface $pagination
      * @return Response
      */
-    public function ajaxIndex(Request $request)
+    private function ajaxIndex(PaginationInterface $pagination)
     {
-        if ($request->isXmlHttpRequest()) {
-            $param = $request->query->get('q');
-            $posts = $this->filter($param);
-            $pagination = $this->paginator->paginate($posts, $request);
-
-            return $this->render('post/index_paginate.html.twig', [
-                    'pagination' => $pagination,
-                ]
-            );
-        }
-
-        throw $this->createNotFoundException('Not found');
+        return $this->render('post/index_paginate.html.twig', [
+                'pagination' => $pagination,
+            ]
+        );
     }
 
     /**

@@ -3,26 +3,21 @@
 namespace App\Form;
 
 use App\Entity\Post;
-use App\Entity\PostDetail;
 use App\Entity\Tag;
-use App\Repository\TagRepository;
-use function PHPSTORM_META\type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class PostType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('postDetail', PostDetailForm::class, array(
-                'label' => false
+            ->add('postTranslation', PostTranslationForm::class, array(
+                'label' => false,
+                'constraints' => array(new Valid()),
             ))
             ->add('tags', EntityType::class, array(
                 'class' => Tag::class,
@@ -39,6 +34,7 @@ class PostType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Post::class,
+            'cascade_validation' => true,
         ]);
     }
 }

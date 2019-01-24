@@ -9,7 +9,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Post;
-use App\Entity\PostDetail;
+use App\Entity\PostTranslation;
 use App\Entity\Tag;
 use Cocur\Slugify\Slugify;
 use PHPUnit\Framework\TestCase;
@@ -39,19 +39,21 @@ class PostTest extends TestCase
 
     public function testItCreatePost()
     {
-        $this->post->setTitle('main title');
-        $content = new PostDetail();
-        $content->setContent('main content');
-        $this->post->setPostDetail($content);
+        $content = new PostTranslation();
+        $content->setTitleEn('main title');
+        $content->setContentEn('main content');
+        $this->post->setPostTranslation($content);
+        $this->assertEquals('main title', $this->post->getPostTranslation()->getTitleEn());
 
-        $this->assertEquals('main content', $this->post->getPostDetail()->getContent());
     }
 
     public function testPostSlugIsCreatedFromTitle()
     {
-        $this->post->setTitle('fantastic title');
-        $this->post->setSlug(Slugify::create()->slugify($this->post->getTitle()));
+        $content = new PostTranslation();
+        $content->setTitleEn('fantastic title');
+        $this->post->setPostTranslation($content);
+        $this->post->getPostTranslation()->setSlugEn(Slugify::create()->slugify($content->getTitleEn()));
 
-        $this->assertEquals('fantastic-title', $this->post->getSlug());
+        $this->assertEquals('fantastic-title', $this->post->getPostTranslation()->getSlugEn());
     }
 }

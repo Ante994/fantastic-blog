@@ -41,6 +41,10 @@
         <source>Comment</source>
         <target>Comment</target>
       </trans-unit>
+        <trans-unit id="user_comments">
+            <source>User comments</source>
+            <target>You commented</target>
+        </trans-unit>
       <trans-unit id="ScJmuqq" resname="Search">
         <source>Search</source>
         <target>Search</target>
@@ -129,17 +133,49 @@
         <source>Back</source>
         <target>Back</target>
       </trans-unit>
-      <trans-unit id="edit_tag">
-        <source>Edit tag</source>
-        <target>Edit tag</target>
-      </trans-unit>
-      <trans-unit id="tag">
-        <source>Tag</source>
-        <target>Tag</target>
-      </trans-unit>
-      <trans-unit id="post">
-        <source>Post</source>
-        <target>Post</target>
+        <trans-unit id="edit_tag">
+            <source>Edit tag</source>
+            <target>Edit tag</target>
+        </trans-unit>
+        <trans-unit id="tag">
+            <source>Tag</source>
+            <target>Tag</target>
+        </trans-unit>
+        <trans-unit id="post">
+            <source>Post</source>
+            <target>Post</target>
+        </trans-unit>
+        <trans-unit id="title_en">
+            <source>Title en</source>
+            <target>Title</target>
+        </trans-unit>
+        <trans-unit id="content_en">
+            <source>Content en</source>
+            <target>Content</target>
+        </trans-unit>
+        <trans-unit id="title_hr">
+            <source>Title hr</source>
+            <target>Title (cro. translation)</target>
+        </trans-unit>
+        <trans-unit id="content_hr">
+            <source>Content hr</source>
+            <target>Content (cro.translation)</target>
+        </trans-unit>
+        <trans-unit id="tag_name_en">
+            <source>Name en</source>
+            <target>Name</target>
+        </trans-unit>
+        <trans-unit id="tag_name_hr">
+            <source>Name hr</source>
+            <target>Name (cro. translation)</target>
+        </trans-unit>
+        <trans-unit id="user_activities">
+            <source>User activities</source>
+            <target>Activities</target>
+        </trans-unit>
+      <trans-unit id="post_title_validation">
+        <source>Post with this title already exist</source>
+        <target>Post with this title already exist</target>
       </trans-unit>
     </body>
   </file>

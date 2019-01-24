@@ -72,8 +72,8 @@ class AdminControllerTest extends FixturesTestCase
 
         $form = $crawler->selectButton('Submit')->form();
 
-        $form['post[title]'] = 'This is title';
-        $form['post[postDetail][content]'] = 'This is example content for testing!';
+        $form['post[postTranslation][titleEn]'] = 'This is title';
+        $form['post[postTranslation][contentEn]'] = 'This is example content for testing!';
         $form['post[tags][1]'] = true;
 
         $this->client->submit($form);
@@ -104,9 +104,10 @@ class AdminControllerTest extends FixturesTestCase
 
         $form = $crawler->selectButton('Submit')->form();
 
-        $form['tag[name]'] = 'Tag X';
+        $form['tag[nameEn]'] = 'Tag X';
+        $form['tag[nameHr]'] = 'Tag X-Hr';
         $this->client->submit($form);
-        $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $crawler = $this->client->request('GET', "/admin/tags");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->assertContains('Tag X', $crawler->filter('tr')->last()->text());
@@ -118,12 +119,12 @@ class AdminControllerTest extends FixturesTestCase
         $em = $container->get('doctrine')->getManager();
         $postRepo = $em->getRepository('App:Post');
         $post = $postRepo->find(1);
-        $crawler = $this->client->request('GET', "/admin/posts/".$post->getSlug()."/edit");
+        $crawler = $this->client->request('GET', "/admin/posts/".$post->getId()."/edit");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton('Submit')->form();
 
-        $form['post[title]'] = 'This is edited title';
+        $form['post[postTranslation][titleEn]'] = 'This is edited title';
         $form['post[tags][1]'] = true;
         $form['post[tags][2]'] = true;
 
@@ -139,15 +140,13 @@ class AdminControllerTest extends FixturesTestCase
         $container = self::$kernel->getContainer();
         $em = $container->get('doctrine')->getManager();
         $postRepo = $em->getRepository('App:Post');
-        $post = $postRepo->findOneBy(['author' => 1]);
-        $slug = $post->getSlug();
-        $this->client->request('GET', "admin/posts/".$post->getSlug());
+        $post = $postRepo->find(1);
+
+        $this->client->request('GET', "admin/posts/".$post->getId());
         $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
-        $this->client->request('DELETE', "/admin/posts/".$slug);
+        $this->client->request('DELETE', "/admin/posts/".$post->getId());
         $this->assertEquals(404,  $this->client->getResponse()->getStatusCode());
     }
-
-
 
     public function testAdminCanDeleteTag()
     {
@@ -167,13 +166,12 @@ class AdminControllerTest extends FixturesTestCase
 
         $form = $crawler->selectButton('Submit')->form();
 
-        $form['tag[name]'] = 'Tag Edit';
+        $form['tag[nameEn]'] = 'Tag Edit';
         $this->client->submit($form);
         $this->assertEquals(302,  $this->client->getResponse()->getStatusCode());
         $this->client->request('GET', "/admin/tags");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
     }
-
 
     public function provideUrlsForAdmin()
     {
@@ -184,7 +182,6 @@ class AdminControllerTest extends FixturesTestCase
         );
     }
 
-
     private function loginAdmin()
     {
         return static::createClient(array(), array(
@@ -193,5 +190,4 @@ class AdminControllerTest extends FixturesTestCase
             'HTTP_HOST' => 'fantastic-blog.puphpet'
         ));
     }
-
 }

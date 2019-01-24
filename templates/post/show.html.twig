@@ -36,17 +36,13 @@
                     </div>
                     <div class="col-md-2">
                         <span>
-                            {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('post_delete', { post: post.slug }) }}" class="fas fa-trash"></a>
-                            | <a href="{{ path('post_edit', { post: post.slug }) }}" class="fas fa-edit"></a>
-                            {% endif %}
                         </span>
                     </div>
                 </div>
             </li>
         </ul>
         <br>
-        <p>{{ post.postDetail.content|raw }}</p>
+        <p>{{ post.content|raw }}</p>
         <hr>
         <div id="post-comments">
             {% include 'comment/_form.html.twig' %}

@@ -53,7 +53,7 @@ class TagController extends AbstractController
             $entityManager->persist($tag);
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_tag_new');
+            return $this->redirectToRoute('admin_tag_index');
         }
 
         return $this->render('admin/tag/new.html.twig', array(

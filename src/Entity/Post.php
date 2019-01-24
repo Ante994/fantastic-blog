@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Intl\Locale;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
@@ -19,16 +19,6 @@ class Post
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *      max = 255,
-     *      maxMessage = "Title cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotBlank
-     */
-    private $title;
 
     /**
      * @ORM\Column(type="array")
@@ -47,11 +37,6 @@ class Post
     private $author;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\PostDetail", mappedBy="post", cascade={"persist", "remove"})
-     */
-    private $postDetail;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="post")
      */
     private $tags;
@@ -60,11 +45,6 @@ class Post
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="post",  orphanRemoval=true)
      */
     private $comments;
-
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
-    private $slug;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\LikeCounter", mappedBy="post", orphanRemoval=true)
@@ -76,6 +56,16 @@ class Post
      */
     private $favorite;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\PostTranslation", mappedBy="post", cascade={"persist", "remove"})
+     * @var PostTranslation
+     */
+    private $postTranslation;
+
+    private $title;
+    private $content;
+    private $slug;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -86,30 +76,6 @@ class Post
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     public function getStatus(): ?array
@@ -147,23 +113,6 @@ class Post
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
-
-        return $this;
-    }
-
-    public function getPostDetail(): ?PostDetail
-    {
-        return $this->postDetail;
-    }
-
-    public function setPostDetail(PostDetail $postDetail): self
-    {
-        $this->postDetail = $postDetail;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $postDetail->getPost()) {
-            $postDetail->setPost($this);
-        }
 
         return $this;
     }
@@ -256,6 +205,38 @@ class Post
         }
 
         return $this;
+    }
+
+    public function getPostTranslation(): ?PostTranslation
+    {
+        return $this->postTranslation;
+    }
+
+    public function setPostTranslation(PostTranslation $postTranslation): self
+    {
+        $this->postTranslation = $postTranslation;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $postTranslation->getPost()) {
+            $postTranslation->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function getTitle()
+    {
+        return $this->postTranslation->{'getTitle'.Locale::getDefault()}();
+    }
+
+    public function getContent()
+    {
+        return $this->postTranslation->{'getContent'.Locale::getDefault()}();
+    }
+
+    public function getSlug()
+    {
+        return $this->postTranslation->{'getSlug'.Locale::getDefault()}();
     }
 
 }

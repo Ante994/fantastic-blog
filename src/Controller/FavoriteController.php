@@ -40,7 +40,7 @@ class FavoriteController extends AbstractController
      */
     public function ajaxFavorite(Request $request)
     {
-        $post = $this->getDoctrine()->getRepository(Post::class)->find($post = $request->get('post'));
+        $post = $this->getDoctrine()->getRepository(Post::class)->find($request->get('post'));
         if ($request->isXmlHttpRequest() && $post instanceof Post) {
             $favorite = $this->favoriter->favorite($post);
 

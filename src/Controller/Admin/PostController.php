@@ -85,7 +85,7 @@ class PostController extends AbstractController
      * Show one post with all details
      *
      * @param Post $post
-     * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
+     * @ParamConverter("post", options={"mapping": {"post": "id"}}))
      * @return Response
      */
     public function show(Post $post)
@@ -107,7 +107,7 @@ class PostController extends AbstractController
      * Delete one post
      *
      * @param Post $post
-     * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
+     * @ParamConverter("post", options={"mapping": {"post": "id"}}))
      * @return Response
      */
     public function delete(Post $post)
@@ -129,7 +129,7 @@ class PostController extends AbstractController
      *
      * @param Request $request
      * @param Post $post
-     * @ParamConverter("post", options={"mapping": {"post": "slug"}}))
+     * @ParamConverter("post", options={"mapping": {"post": "id"}}))
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function edit(Request $request, Post $post)

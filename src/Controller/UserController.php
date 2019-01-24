@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Favorite;
+use App\Entity\LikeCounter;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -45,13 +46,15 @@ class UserController extends AbstractController
     public function show(): Response
     {
         $user = $this->repository->find($this->getUser());
-        $favoritePosts = $this->getDoctrine()->getRepository(Favorite::class)->findFavoritePostForUser($this->getUser());
+        $favorite = $this->getDoctrine()->getRepository(Favorite::class)->findFavoritePostForUser($this->getUser());
         $comments = $this->getDoctrine()->getRepository(Comment::class)->findLatestUserComments($this->getUser());
+        $likes = $this->getDoctrine()->getRepository(LikeCounter::class)->findUserLikesOnPosts($this->getUser());
 
         return $this->render('user/show.html.twig', [
                 'user' => $user,
-                'favorites' => $favoritePosts,
+                'favorites' => $favorite,
                 'comments' => $comments,
+                'likes' => $likes
             ]
         );
     }

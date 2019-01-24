@@ -62,14 +62,15 @@ class PostControllerTest extends FixturesTestCase
 
     public function testUserCanLikePost()
     {
+        $container = self::$kernel->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        $postRepository = $em->getRepository('App:Post');
+
         $this->client->request('GET', "/posts/test-1");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $container = self::$kernel->getContainer();
-        $em = $container->get('doctrine')->getManager();
-        $postRepo = $em->getRepository('App:Post');
-        $post = $postRepo->find(1);
+        $post = $postRepository->find(1);
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->client->xmlHttpRequest('POST', '/ajax-like', array('post' => $post));
 
@@ -78,20 +79,19 @@ class PostControllerTest extends FixturesTestCase
 
     public function testUserCanFavoritePost()
     {
+        $container = self::$kernel->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        $postRepository = $em->getRepository('App:Post');
+
         $this->client->request('GET', "/posts/test-1");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $container = self::$kernel->getContainer();
-        $em = $container->get('doctrine')->getManager();
-        $postRepo = $em->getRepository('App:Post');
-        $post = $postRepo->findOneBy(['slug' => 'test-1']);
+        $post = $postRepository->find(1);
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->client->xmlHttpRequest('POST', '/ajax-favorite', array('post' => $post));
 
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
-
-
     }
 
     public function testUserCanCommentPost()

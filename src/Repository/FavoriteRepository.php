@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Favorite;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -30,11 +29,21 @@ class FavoriteRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('f')
             ->andWhere('f.user = :user')
             ->setParameter('user', $user)
-            ->innerJoin('f.post', 'fav_post')
-            ->select('fav_post.title, fav_post.slug')
+            ->join('f.post', 'fav_post')
+            ->select('f')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
+    }
 
+    public function findFavoritePostsForUser(User $user)
+    {
+        $dql = 'SELECT p.* FROM App:Favorite f INNER JOIN App:Post p ON f.post_id = p.id where f.user_id = :id';
+
+         return $this->getEntityManager()
+             ->createQuery($dql)
+             ->setParameter('id', $user->getId())
+             ->getResult();
     }
 
     /*

@@ -20,7 +20,6 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-
     public function search($term)
     {
         $qb = $this->createQueryBuilder('p')
@@ -30,6 +29,11 @@ class PostRepository extends ServiceEntityRepository
             ->setParameter('searchTerm', '%'.$term.'%')
             ->getQuery()
             ->execute();
+    }
+
+    public function findAllOrderByDate($orderBy='DESC')
+    {
+        return $this->findBy(array(), array('dateCreated' => $orderBy));
     }
 
     private function addIsPublishedQueryBuilder(QueryBuilder $qb = null)
@@ -42,10 +46,4 @@ class PostRepository extends ServiceEntityRepository
     {
         return $qb ?: $this->createQueryBuilder('p');
     }
-
-    public function findAllOrderByDate($orderBy='DESC')
-    {
-        return $this->findBy(array(), array('dateCreated' => $orderBy));
-    }
-
 }

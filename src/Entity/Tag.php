@@ -5,10 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Intl\Locale;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
+ * @UniqueEntity("nameEn")
  */
 class Tag
 {
@@ -29,7 +33,20 @@ class Tag
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=30)
      */
-    private $name;
+    private $nameEn;
+
+    /**
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 30,
+     *      minMessage = "Tag name must be at least {{ limit }} characters long",
+     *      maxMessage = "Tag name cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\NotBlank
+     * @ORM\Column(name="name_hr", type="string", length=30, unique=true)
+     */
+    private $nameHr;
+
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Post", mappedBy="tags")
@@ -48,12 +65,30 @@ class Tag
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->{'getName'.Locale::getDefault()}();
     }
 
-    public function setName(string $name): self
+
+    public function getNameEn(): ?string
     {
-        $this->name = $name;
+        return $this->nameEn;
+    }
+
+    public function setNameEn(string $name): self
+    {
+        $this->nameEn = $name;
+
+        return $this;
+    }
+
+    public function getNameHr(): ?string
+    {
+        return $this->nameHr;
+    }
+
+    public function setNameHr(string $name): self
+    {
+        $this->nameHr = $name;
 
         return $this;
     }

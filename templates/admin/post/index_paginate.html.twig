@@ -6,9 +6,9 @@
                 <p>
                     {{ post.title }} - {{ post.dateCreated|date('j.m.Y')}}
                     <div class="col-md-2">
-                        <a href="{{ path('admin_post_show', { post: post.slug }) }}" class="fas fa-hand-point-up"></a>
-                        <a href="{{ path('admin_post_delete', { post: post.slug }) }}" class="fas fa-trash"></a>
-                        <a href="{{ path('admin_post_edit', { post: post.slug }) }}" class="fas fa-edit"></a>
+                        <a href="{{ path('admin_post_show', { post: post.id }) }}" class="fas fa-hand-point-up"></a>
+                        <a href="{{ path('admin_post_delete', { post: post.id }) }}" class="fas fa-trash"></a>
+                        <a href="{{ path('admin_post_edit', { post: post.id }) }}" class="fas fa-edit"></a>
                     </div>
                 </p>
 

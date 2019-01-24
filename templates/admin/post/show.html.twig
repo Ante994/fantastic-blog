@@ -37,14 +37,14 @@
                     </span>
                 </div>
                 <div class="col-md-2">
-                    <a href="{{ path('admin_post_delete', { post: post.slug }) }}" class="fas fa-trash"></a>
-                    |  <a href="{{ path('admin_post_edit', { post: post.slug }) }}" class="fas fa-edit"></a>
+                    <a href="{{ path('admin_post_delete', { post: post.id }) }}" class="fas fa-trash"></a>
+                    |  <a href="{{ path('admin_post_edit', { post: post.id }) }}" class="fas fa-edit"></a>
                 </div>
             </div>
         </li>
     </ul>
     <br>
-    <p>{{ post.postDetail.content|raw }}</p>
+    <p>{{ post.content|raw }}</p>
     <hr>
     <div id="post-comments">
         {% include 'comment/_form.html.twig' %}

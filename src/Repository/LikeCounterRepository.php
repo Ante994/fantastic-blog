@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\LikeCounter;
 use App\Entity\Post;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -34,10 +35,16 @@ class LikeCounterRepository extends ServiceEntityRepository
             ->setParameter('postId', $post)
             ->getQuery();
 
-        try {
-            return $query->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
-        };
+        return $query->getOneOrNullResult();
     }
 
+    public function findUserLikesOnPosts(User $user)
+    {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.owner = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

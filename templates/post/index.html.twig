@@ -14,9 +14,8 @@
                     e.preventDefault();
                     $.ajax({
                         type: "GET",
-                        url: '{{ path('ajax_post_index') }}' + $(this).attr('href'),
+                        url: $(this).attr('href'),
                     }).done(function (data) {
-                        console.log(data)
                         $('#post-container').html(data);
                     });
 
