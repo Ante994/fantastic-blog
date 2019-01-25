@@ -238,5 +238,4 @@ class Post
     {
         return $this->postTranslation->{'getSlug'.Locale::getDefault()}();
     }
-
 }

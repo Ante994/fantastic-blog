@@ -54,10 +54,12 @@ class Favoriter
         ]);
 
         if ($postFavorite) {
-            return $this->removeFavorite($postFavorite);
+            $favorite =  $this->removeFavorite($postFavorite);
         } else {
-           return $this->makeFavorite($post);
+           $favorite = $this->makeFavorite($post);
         }
+
+        return $favorite;
     }
 
     /**
