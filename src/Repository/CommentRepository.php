@@ -21,8 +21,10 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
+     * Returns an array of Comment objects
+     *
      * @param User $user
-     * @return Comment[] Returns an array of Comment objects
+     * @return Comment[]
      */
     public function findLatestUserComments(User $user)
     {
@@ -35,17 +37,4 @@ class CommentRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-
-    /*
-    public function findOneBySomeField($value): ?Comment
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

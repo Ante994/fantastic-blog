@@ -13,10 +13,17 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-
+/**
+ * Abstract class that extend base WebTestCase class for
+ * functional testing with data fixtures
+ *
+ * Class FixturesTestCase
+ * @package App\Tests
+ */
 abstract class FixturesTestCase extends WebTestCase
 {
     protected $client;
+
     protected function setUp()
     {
         $this->client = static::createClient();
@@ -27,6 +34,7 @@ abstract class FixturesTestCase extends WebTestCase
         if (!isset($metadatas)) {
             $metadatas = $em->getMetadataFactory()->getAllMetadata();
         }
+
         /** @var EntityManager $em */
         $schemaTool = new SchemaTool($em);
         $schemaTool->dropDatabase();

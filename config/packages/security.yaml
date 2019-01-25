@@ -28,6 +28,7 @@ security:
               target: post_index
 
     access_control:
-         - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/hr/admin, roles: ROLE_ADMIN }
-         - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/admin/*, roles: ROLE_ADMIN }
+         - { path: ^/hr/admin/*, roles: ROLE_ADMIN }
+         - { path: ^/profile/*, roles: ROLE_USER }
+         - { path: ^/hr/profile/*, roles: ROLE_USER }

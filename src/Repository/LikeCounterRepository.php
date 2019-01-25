@@ -24,7 +24,8 @@ class LikeCounterRepository extends ServiceEntityRepository
 
     /**
      * @param Post $post
-     * @return mixed
+     * @return LikeCounter
+     * @throws NonUniqueResultException
      */
     public function findTotalLikesForPost(Post $post)
     {
@@ -38,6 +39,10 @@ class LikeCounterRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * @param User $user
+     * @return LikeCounter[]
+     */
     public function findUserLikesOnPosts(User $user)
     {
         return $this->createQueryBuilder('l')

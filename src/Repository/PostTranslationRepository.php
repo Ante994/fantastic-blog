@@ -20,39 +20,15 @@ class PostTranslationRepository extends ServiceEntityRepository
         parent::__construct($registry, PostTranslation::class);
     }
 
-    // /**
-    //  * @return PostTranslation[] Returns an array of PostTranslation objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?PostTranslation
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
+    /**
+     * @param string $slug
+     * @param string $locale
+     * @return PostTranslation|[]
+     */
     public function findBySlug($slug, $locale='en')
     {
-        $qb = $this->createQueryBuilder('p')
-            ->andWhere('p.slug_'.$locale.' = :slug_'.$locale);
+        $qb = $this->createQueryBuilder('pt')
+            ->andWhere('pt.slug_'.$locale.' = :slug_'.$locale);
 
         try {
             return $qb
@@ -62,5 +38,21 @@ class PostTranslationRepository extends ServiceEntityRepository
         } catch (NonUniqueResultException $e) {
 
         }
+    }
+
+    /**
+     * @param string $title
+     * @param string $locale
+     * @return PostTranslation|[]
+     */
+    public function findByTitleAndLocale($title, $locale='en')
+    {
+        $qb = $this->createQueryBuilder('pt')
+            ->andWhere('pt.title_'.$locale.' LIKE :title');
+
+        return $qb
+            ->setParameter('title', '%'.$title.'%')
+            ->getQuery()
+            ->execute();
     }
 }

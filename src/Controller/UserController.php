@@ -71,10 +71,6 @@ class UserController extends AbstractController
     {
         $user = $this->repository->find($user);
 
-        if ($this->getUser() !== $user) {
-            throw $this->createNotFoundException("This does not exist or you not allowed be here!");
-        }
-
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

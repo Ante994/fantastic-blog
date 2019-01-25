@@ -48,8 +48,7 @@ class PostController extends AbstractController
      */
     public function index(Request $request)
     {
-        $param = $request->query->get('q');
-        $posts = $this->filter($param);
+        $posts = $this->filter($request);
         $pagination = $this->paginator->paginate($posts, $request);
 
         if ($request->isXmlHttpRequest()) {
@@ -67,6 +66,7 @@ class PostController extends AbstractController
      *
      * @param Request $request
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function show(Request $request)
     {
@@ -105,13 +105,16 @@ class PostController extends AbstractController
     /**
      * Filter function for post if is passed keyword else found all
      *
-     * @param String $param
+     * @param Request $request
      * @return Post[]
      */
-    private function filter(String $param=null)
+    private function filter(Request $request)
     {
+        $param = $request->query->get('q');
+        $locale = $request->getLocale();
+
         if ($param) {
-            $objects = $this->repository->search($param);
+            $objects = $this->repository->search($param, $locale);
         } else {
             $objects = $this->repository->findAllOrderByDate();
         }

@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -20,30 +19,32 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    public function search($term)
+    /**
+     * Search all post which contain passed title in post translations for user locale
+     *
+     * @param $title
+     * @param string $locale
+     * @return Post[]
+     */
+    public function search($title, $locale='en')
     {
-        $qb = $this->createQueryBuilder('p')
-            ->andWhere('p.title LIKE :searchTerm');
-
-        return $qb
-            ->setParameter('searchTerm', '%'.$term.'%')
+        return $this->createQueryBuilder('p')
+            ->join('p.postTranslation', 'pt')
+            ->where('pt.title_'.$locale.' LIKE :title')
+            ->setParameter('title', '%'.$title.'%')
             ->getQuery()
-            ->execute();
+            ->getResult()
+        ;
     }
 
+    /**
+     * Find all post ordered by date (default DESC)
+     *
+     * @param string $orderBy
+     * @return Post[]
+     */
     public function findAllOrderByDate($orderBy='DESC')
     {
         return $this->findBy(array(), array('dateCreated' => $orderBy));
-    }
-
-    private function addIsPublishedQueryBuilder(QueryBuilder $qb = null)
-    {
-        return $this->getOrCreateQueryBuilder($qb)
-            ->andWhere('p.publishedAt IS NOT NULL');
-    }
-
-    private function getOrCreateQueryBuilder(QueryBuilder $qb = null)
-    {
-        return $qb ?: $this->createQueryBuilder('p');
     }
 }

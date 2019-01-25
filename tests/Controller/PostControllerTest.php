@@ -54,8 +54,8 @@ class PostControllerTest extends FixturesTestCase
     public function testPostDetailsPageWorks()
     {
         $this->client->request('GET', "/posts/test-1");
-        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
+        $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -96,35 +96,35 @@ class PostControllerTest extends FixturesTestCase
 
     public function testUserCanCommentPost()
     {
+        $container = self::$kernel->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        $postRepository = $em->getRepository('App:Post');
+
         $this->client->request('GET', "/posts/test-1");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $container = self::$kernel->getContainer();
-        $em = $container->get('doctrine')->getManager();
-        $postRepo = $em->getRepository('App:Post');
-        $post = $postRepo->find(1);
+        $post = $postRepository->find(1);
         $this->client->xmlHttpRequest('POST', '/ajax-comment', array('post' => $post, 'content' => 'test comment'));
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
     }
 
     public function testUserCanDeleteCommentPost()
     {
+        $container = self::$kernel->getContainer();
+        $em = $container->get('doctrine')->getManager();
+        $commentRepository = $em->getRepository('App:Comment');
+        $postRepository = $em->getRepository('App:Post');
+
         $this->client->request('GET', "/posts/test-1");
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $container = self::$kernel->getContainer();
-        $em = $container->get('doctrine')->getManager();
-        $commentRepo = $em->getRepository('App:Comment');
-
-        $postRepo = $em->getRepository('App:Post');
-        $post = $postRepo->find(1);
-
+        $post = $postRepository->find(1);
         $this->client->xmlHttpRequest('POST', '/ajax-comment', array('post' => $post, 'content' => 'test comment for delete'));
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
 
-        $comment = $commentRepo->findOneBy(['content' => 'test comment for delete', 'author' => 2]);
+        $comment = $commentRepository->findOneBy(['content' => 'test comment for delete', 'author' => 2]);
         $this->client->xmlHttpRequest('DELETE', '/ajax-delete', array('comment' => $comment));
         $this->assertEquals(200,  $this->client->getResponse()->getStatusCode());
     }

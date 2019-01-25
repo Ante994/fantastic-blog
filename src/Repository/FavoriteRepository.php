@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Favorite;
+use App\Entity\Post;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -21,8 +22,10 @@ class FavoriteRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find user favorites
+     *
      * @param User $user
-     * @return mixed
+     * @return Favorite[]
      */
     public function findFavoritePostForUser(User $user)
     {
@@ -36,6 +39,12 @@ class FavoriteRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * Find users all favorite posts
+     *
+     * @param User $user
+     * @return Post[]
+     */
     public function findFavoritePostsForUser(User $user)
     {
         $dql = 'SELECT p.* FROM App:Favorite f INNER JOIN App:Post p ON f.post_id = p.id where f.user_id = :id';
@@ -45,16 +54,4 @@ class FavoriteRepository extends ServiceEntityRepository
              ->setParameter('id', $user->getId())
              ->getResult();
     }
-
-    /*
-    public function findOneBySomeField($value): ?Favorite
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
